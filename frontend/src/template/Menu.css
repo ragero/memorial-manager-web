@@ -5,8 +5,22 @@
     
 }
 
-nav a{
+
+
+.menu nav a {
+    margin-top: 10px;
+    color: white;
     display: block;
-    color: var(--color-aside);
+    padding: 15px 15px;
     text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.4s
+}
+
+.menu nav a i {
+    margin-right: 12px;
+}
+
+.menu nav a:hover {
+    background-color: rgb(0, 121, 255)
 }
