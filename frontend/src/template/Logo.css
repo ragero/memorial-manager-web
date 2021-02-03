@@ -1,0 +1,5 @@
+.logo{
+    grid-area: logo;
+    background-color: var(--bg-aside);
+    color: var(--color-aside);
+}

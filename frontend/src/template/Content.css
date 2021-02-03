@@ -1,0 +1,6 @@
+.principal{
+    grid-area: principal;
+    width: 90%;
+    height: auto;
+    margin: 50px 50px;
+}

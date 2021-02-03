@@ -1,9 +1,9 @@
+const { Db } = require("mongodb")
 
 class DaoPublications{
 
     addPublication(data){
-        console.log(data)
-        console.log(db)
+        
     }
 
 }

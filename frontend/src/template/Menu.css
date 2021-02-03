@@ -1,0 +1,12 @@
+.menu{
+    grid-area: menu;
+    background-color: var(--bg-aside);
+    
+    
+}
+
+nav a{
+    display: block;
+    color: var(--color-aside);
+    text-decoration: none;
+}

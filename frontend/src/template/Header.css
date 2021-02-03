@@ -1,0 +1,4 @@
+.cabecalho{
+    grid-area: cabecalho;
+    background-color: var(--bg-header);
+}

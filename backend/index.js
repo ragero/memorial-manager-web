@@ -12,7 +12,7 @@ mongoClient.connect(process.env.URI_DATABASE, function (err, client) {
   } else {
     db = client.db('memorial')
     console.log("Coneected to the database");
-
+    collection = db.collection('memorial')
     app.listen(3000, () => {
       console.log(`Working on ${3000}`);
     });
