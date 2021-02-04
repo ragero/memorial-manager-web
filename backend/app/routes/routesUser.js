@@ -11,4 +11,7 @@ module.exports = (app) => {
         .put(controlerUser.updateUser())
         .delete(controlerUser.removeUser())
 
+    app.route(controlerUser.routes().login)
+        .post(controlerUser.login())
+
 }

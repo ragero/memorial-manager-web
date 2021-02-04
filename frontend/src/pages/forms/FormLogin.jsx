@@ -6,7 +6,7 @@ import './FormLogin.css'
 
 function logar(e,  email, senha) {
     e.preventDefault()
-    apiRequest.post('/users',
+    apiRequest.post('/users/login',
         {
             senha,
             email
@@ -24,7 +24,7 @@ export default function AddUser() {
     const [senha, setSenha] = useState('')
 
     return (
-        <Container maxWidth="sm" className="form-login mt-5">
+        <Container maxWidth="sm" className="form-login mt-5 shadow">
             <form>
                 <TextField
                     id="nome"

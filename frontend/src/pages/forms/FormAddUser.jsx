@@ -4,23 +4,37 @@ import { apiRequest } from '../../services/request'
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import "./FormAddUser.css"
 
-function cadastrar(e, nome, email, senha) {
-    e.preventDefault()
-    console.log(nome, email, senha)
-    apiRequest.post('/users',
-        {
-            nome,
-            senha,
-            email
-        }, 
-        {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-}
 
-export default function AddUser() {
+
+export default function AddUser(props) {
+
+    const cadastrar = (e, nome, email, senha) => {
+        e.preventDefault()
+        console.log(nome, email, senha)
+        apiRequest.post('/users',
+            {
+                nome,
+                senha,
+                email
+            }, 
+            {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(resposta => resposta.data)
+        .then(resposta => {
+            console.log(resposta)
+            if(resposta.status === 'sucesso'){
+                alert('Usuário cadastrado com sucesso')
+                window.location.href = '/'
+            }else{
+                alert('E-mail já utilizado na base de dados')
+            }
+        })
+        .catch(erro => console.log(erro))
+    }
+
 
     const [nome, setNome] = useState('')
     const [email, setEmail] = useState('')
@@ -28,7 +42,7 @@ export default function AddUser() {
     const [confirmarSenha, setConfirmarSenha] = useState('')
 
     return (
-        <Container maxWidth="sm" className="form-cadastro mt-5">
+        <Container maxWidth="sm" className="form-cadastro mt-5 shadow">
             <form>
                 <TextField
                     id="nome"

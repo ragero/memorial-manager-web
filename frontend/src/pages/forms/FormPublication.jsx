@@ -70,7 +70,7 @@ export default class AddPublication extends Component {
                         onChange={this.atualizarCampo}
                     />
                     <FormControl>
-                        <InputLabel id="demo-simple-select-label">Age</InputLabel>
+                        <InputLabel id="demo-simple-select-label">Tipo  </InputLabel>
                         <Select
                             id="tipo"
                             name="tipo"
