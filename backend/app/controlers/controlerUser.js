@@ -1,5 +1,6 @@
 const daoUsers = require('../daos/daoUser')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
 class ControlerUser{
 
@@ -10,6 +11,19 @@ class ControlerUser{
             login: '/app/users/login',
             logout: '/app/users/logout'
         }    
+    }
+
+    criaTokenJWT(usuario){
+        console.log('Criando o JWT =================')
+        console.log(usuario)
+        const payload = {
+            id: usuario._id,
+            nome: usuario.nome,
+            email: usuario.email
+        }
+        const token = jwt.sign(payload, process.env.CHAVE_JWT)
+
+        return token 
     }
 
     async _gerarSenhaHash(senha){
@@ -39,6 +53,7 @@ class ControlerUser{
 
     login(){
         return (req, resp) => {
+            console.log('LOGIN ================================================')
             console.log(req.user)
             const token = this.criaTokenJWT(req.user)
             resp.setHeader('Authorization', token)

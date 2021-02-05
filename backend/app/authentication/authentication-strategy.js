@@ -3,8 +3,7 @@ const BearerStrategy = require('passport-http-bearer').Strategy
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const LocalStrategy = require('passport-local').Strategy
-const UsuarioDao = require('./dao-usuario')
-const usuarioDao = new UsuarioDao()
+const daoUser = require('../daos/daoUser')
 
 async function comparaSenha(senha, senhaHash) {
     const resposta = await bcrypt.compare(senha, senhaHash)
@@ -25,10 +24,12 @@ passport.use(
             console.log("Imprimindo os campos da autenticação dentro do local strategy")
             console.log('Email: ' + email)
             console.log('Senha: ' + senha)
-            const usuario = await usuarioDao.getUserByEmail(email)
-            console.log('Usuario: ' + usuario)
+            const usuario = await daoUser.getUserByEmail(email)
+            console.log('Nome do usuário: ', usuario.nome )
+            console.log('Senha do usuário: ', usuario.senha)
             console.log('Aqui!!!! ============')
             if (await comparaSenha(senha, usuario.senha)) {
+                console.log('Bateu a senha')
                 done(null, usuario)
             } else {
                 done('Senha Inválida')
@@ -47,12 +48,12 @@ passport.use(
         async (token, done) => {
             try {
                 const payload = jwt.verify(token, process.env.CHAVE_JWT)
-                const usuario = await usuarioDao.getUserByEmail(payload.email)
+                const usuario = await daoUser.getUserByEmail(payload.email)
                 done(null, usuario, {token})
             } catch (error) {
                 done(error)
             }
-
+            
         }
     )
 )

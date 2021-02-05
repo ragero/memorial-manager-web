@@ -1,5 +1,5 @@
 import './Header.css'
-import Link from '@material-ui/core/Link'
+import AutenticacaoUsuario from './AutenticacaoUsuario'
 
 export default function Header(props) {
     return (
@@ -8,15 +8,7 @@ export default function Header(props) {
             <hr />
             <div className="cabecalho-sub pr-3">
                 <h5>{props.subtitulo}</h5>
-                <div className="cabecalho-sub-links">
-                    <Link href="/login" className="mr-2">
-                        Entrar
-                    </Link>
-                    |
-                    <Link href="/cadastrar-usuario" className="ml-2">
-                            Criar Conta
-                    </Link>
-                </div>
+                <AutenticacaoUsuario/>
             </div>
         </header>
     )

@@ -5,20 +5,22 @@ class ControlerPublication{
 
     routes(){
         return {
-            base: '/publications',
-            baseID: `/publications/:id`
+            base: '/app/publications',
+            baseID: `/app/publications/:id`
         }    
     }
 
     addPublication(){
         return function(req,resp){
-            daoPublications.addPublication(req.body)
+            daoPublications.addPublication({...req.body, user: req.user, pathArquivo: req.file.path})
         }
     }
 
     getPublications(){
         return function(req,resp){
-            resp.send('Get publications')
+            daoPublications.getPublications(req.user)
+                .then(resultado => resp.json(resultado))
+                .catch(erro => resp.json(erro))
         }
     }
 

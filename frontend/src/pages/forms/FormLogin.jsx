@@ -1,6 +1,7 @@
 import { Container, TextField, Button } from '@material-ui/core'
 import { useState } from 'react'
 import { apiRequest } from '../../services/request'
+import Autenticacao from '../../services/authentication'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import './FormLogin.css'
 
@@ -16,6 +17,21 @@ function logar(e,  email, senha) {
             'Content-Type': 'application/json'
         }
     })
+    .then((resposta) => resposta.data)
+    .then((resposta) => {
+        
+        console.log(resposta)
+        if(resposta.erro === undefined){
+            const dados = {nome: resposta.user.nome, id: resposta.user.id, email: resposta.user.email, token: resposta.token}
+            Autenticacao.login(dados)
+            window.location.href = '/'
+        }else{ 
+            alert('Usuário ou senha inválidos')
+        }
+        console.log(resposta)
+    })
+    .catch((erro) => console.log(erro))
+
 }
 
 export default function AddUser() {

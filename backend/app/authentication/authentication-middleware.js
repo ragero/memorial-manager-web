@@ -17,6 +17,7 @@ module.exports = {
         },
     bearear: (req, resp, next) => {
         passport.authenticate('bearer', { session: false }, (erro, usuario, info) => {
+            console.log('========================= BEAREAR2 =================')
             if (erro) {
                 resp.json({ erro: 'JWT mal formatado' })
             }

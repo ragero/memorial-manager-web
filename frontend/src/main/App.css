@@ -18,7 +18,7 @@
   background-color: var(--bg-color);
   display: grid;
   grid-template-columns: 270px 1fr;
-  grid-template-rows: 110px 1fr 50px;
+  grid-template-rows: 120px 1fr 50px;
   grid-template-areas:  "logo cabecalho"
                         "menu principal"
                         "menu rodape";

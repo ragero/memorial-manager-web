@@ -1,5 +1,5 @@
 import axios from "axios";
-//import Autenticacao from './autenticacao'
+import Autenticacao from './authentication'
 
 
 const baseURL = `http://localhost:3000/app`
@@ -10,13 +10,12 @@ const apiRequest = axios.create({
   baseURL: baseURL
 });
 
-// apiRequest.interceptors.request.use(async config => {
-//   if(Autenticacao.isAuthenticade()){
-//     const token = Autenticacao.getToken();
-//     config.headers.Authorization = `Bearer ${token}`;
-//   }
-  
-//   return config;
-// });
+ apiRequest.interceptors.request.use(async config => {
+   if(Autenticacao.isAuthenticade()){
+     const token = Autenticacao.getToken();
+     config.headers.Authorization = `Bearer ${token}`;
+   }
+   return config;
+});
 
 export {apiRequest,baseURL};

@@ -1,4 +1,8 @@
 const controlerUser = require('../controlers/controlerUser')
+const passport = require('passport')
+const middlewareAutenticacao = require('../authentication/authentication-middleware')
+
+
 
 module.exports = (app) => {
 
@@ -12,6 +16,6 @@ module.exports = (app) => {
         .delete(controlerUser.removeUser())
 
     app.route(controlerUser.routes().login)
-        .post(controlerUser.login())
+        .post(middlewareAutenticacao.local, controlerUser.login())
 
 }
