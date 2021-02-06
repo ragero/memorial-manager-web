@@ -12,13 +12,28 @@ class ControlerPublication{
 
     addPublication(){
         return function(req,resp){
+            console.log('========post===========')
+            console.log(req.body)
             daoPublications.addPublication({...req.body, user: req.user, pathArquivo: req.file.path})
+                .then(resultado => resp.json(resultado))
+                .catch(erro => resp.json(erro))
         }
     }
 
     getPublications(){
         return function(req,resp){
             daoPublications.getPublications(req.user)
+                .then(resultado => resp.json(resultado))
+                .catch(erro => resp.json(erro))
+        }
+    }
+
+    removePublication(){
+        return function(req,resp){
+            console.log('Body=====')
+            console.log(req.body)
+            console.log(req.params)
+            daoPublications.removePublication(req.user.email, req.params.id)
                 .then(resultado => resp.json(resultado))
                 .catch(erro => resp.json(erro))
         }
@@ -32,15 +47,13 @@ class ControlerPublication{
 
     updatePublication(){
         return function(req,resp){
-            resp.send('Update publications')
+            console.log('========put===========')
+            console.log(req.body)
+            daoPublications.updatePublication(req.body)
         }
     }
 
-    removePublication(){
-        return function(req,resp){
-            resp.send('Remove publications')
-        }
-    }
+    
 
 }
 

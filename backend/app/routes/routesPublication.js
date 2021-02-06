@@ -25,10 +25,12 @@ module.exports = (app) => {
     app.route(controlerPublication.routes().base)
         .get(middlewareAutenticacao.bearear, controlerPublication.getPublications())
         .post(middlewareAutenticacao.bearear, upload.single('comprovante'), controlerPublication.addPublication())
+        .put(middlewareAutenticacao.bearear, upload.single('comprovante'), controlerPublication.updatePublication())
     
     app.route(controlerPublication.routes().baseID)
         .get(middlewareAutenticacao.bearear, controlerPublication.getPublication())
-        .put(middlewareAutenticacao.bearear, controlerPublication.updatePublication())
         .delete(middlewareAutenticacao.bearear, controlerPublication.removePublication())
+        
+        
 
 }

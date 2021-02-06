@@ -4,6 +4,7 @@ const {routePublications,routeUsers} = require('../app/routes/')
 const authenticationStrategy = require('../app/authentication/authentication-strategy')
 
 const app = express()
+app.use('/public', express.static('./public'))
 app.use(express.urlencoded({extended:true}))
 app.use(express.json())
 app.use(cors())

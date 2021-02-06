@@ -8,7 +8,10 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Publicacoes from './Publicacoes'
 import Autenticacao from '../../services/authentication'
 
-export default function Pesquisa() {
+
+
+
+export default function Pesquisa(props) {
     
         if(!Autenticacao.isAuthenticade()){
             return(
@@ -53,6 +56,21 @@ export default function Pesquisa() {
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel3a-content"
                     id="panel3a-header"
+                >
+                    <Typography variant="h5" component="h3">Grupos de pesquisa</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                    <Typography>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
+                        sit amet blandit leo lobortis eget.
+                    </Typography>
+                </AccordionDetails>
+            </Accordion>
+            <Accordion>
+                <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel4a-content"
+                    id="panel4a-header"
                 >
                     <Typography variant="h5" component="h3">Pareceres</Typography>
                 </AccordionSummary>

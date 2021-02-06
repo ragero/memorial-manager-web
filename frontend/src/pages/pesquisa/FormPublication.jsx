@@ -1,43 +1,43 @@
-import {Component} from 'react'
+import { Component } from 'react'
 import { Typography, Container, TextField, Button, FormControl, Select, MenuItem, InputLabel } from '@material-ui/core'
 import CloudUploadIcon from '@material-ui/icons/CloudUpload'
 import PersonAddIcon from '@material-ui/icons/PersonAdd'
 import SaveAltIcon from '@material-ui/icons/SaveAlt'
 import CloseIcon from '@material-ui/icons/Close'
 import './FormPublication.css'
-import {apiRequest} from '../../services/request'
+import { apiRequest } from '../../services/request'
 
-const initialState = {
-    titulo: '',
-    tipo: 'Periódico',
-    local: '',
-    autores: [],
-    nomeArquivo: '',
-    qualis: '',
-    paginaInicial: '',
-    paginaFinal: '',
-    anoPublicacao: '',
-    comprovante: ''
-}
+
 
 export default class AddPublication extends Component {
 
     constructor(props) {
         super(props)
-        this.state = { ...initialState }
+        this.state = { ...props.dados }
         this.addAutor = this.addAutor.bind(this)
         this.atualizaArquivo = this.atualizaArquivo.bind(this)
         this.atualizarCampo = this.atualizarCampo.bind(this)
         this.atualizarImagem = this.atualizarImagem.bind(this)
-        this.cadastrarPublicacao = this.cadastrarPublicacao.bind(this)
+        this.enviarPublicacao = this.enviarPublicacao.bind(this)
+        this.resetarDados = this.resetarDados.bind(this)
+    }
+
+    resetarDados(e) {
+        if (e !== undefined) {
+            e.preventDefault()
+        }
+        this.props.fecharTelaCadastro()
+        //this.imagem.current.value = ''
+        //this.imagem.file.value = ''
+        //this.setState({...initialState})
     }
 
     atualizarCampo(e) {
         this.setState({ [e.target.name]: e.target.value })
     }
 
-    atualizarImagem(e){
-        this.setState({imagem : e.target.files[0]})
+    atualizarImagem(e) {
+        this.setState({ imagem: e.target.files[0] })
     }
 
     atualizaAutor(e, indice) {
@@ -47,45 +47,79 @@ export default class AddPublication extends Component {
     }
 
     atualizaArquivo(e) {
-        this.setState({ nomeArquivo: e.target.files[0].name, comprovante: e.target.files[0]})
+        this.setState({ nomeArquivo: e.target.files[0].name, comprovante: e.target.files[0] })
     }
+
+
 
     addAutor() {
         const autores = this.state.autores
         autores.push('')
         this.setState({ autores: autores })
-        
+
     }
 
-    cadastrarPublicacao(e){
+    enviarPublicacao(e) {
         e.preventDefault()
         let formData = new FormData()
         formData.append('titulo', this.state.titulo)
         formData.append('tipo', this.state.tipo)
         formData.append('local', this.state.local)
         formData.append('qualis', this.state.qualis)
+        formData.append('autores', this.state.autores)
         formData.append('paginaInicial', this.state.paginaInicial)
         formData.append('paginaFinal', this.state.paginaFinal)
         formData.append('anoPublicacao', this.state.anoPublicacao)
-        formData.append('comprovante', this.state.comprovante)        
-        apiRequest.post("/publications", formData)
-        .then(resposta => resposta.data)
-        .then(dados => {
-            console.log(dados)
-            if(dados.erros === undefined){
-                alert('Usuário cadastrado com sucesso')
-                this.resetarDados()
-            }else{ 
-                const listaErros = dados.erros.map((erro) => <li key={erro.param}>Houve um erro no campo {erro.param}: {erro.msg}</li>)
-                    this.setState({erros : <ul className='mb-0'>{listaErros}</ul>})
-                    console.log(listaErros)
-            }
+        formData.append('comprovante', this.state.comprovante)
+
+        const methodRequest = this.props.tipoEnvio === 'Cadastrar' ? 'post' : 'put'
+        alert(methodRequest)
+        apiRequest({
+            method: methodRequest,
+            url: '/publications',
+            data: formData
         })
-        .catch(erro => console.log(erro))
+            .then(resposta => resposta.data)
+            .then(dados => {
+                if (dados.erros === undefined) {
+                    alert('Publicação cadastrada com sucesso')
+                    this.resetarDados()
+                    this.props.atualizaPublicacoes()
+                    this.props.fecharTelaCadastro()
+                } else {
+                    const listaErros = dados.erros.map((erro) => <li key={erro.param}>Houve um erro no campo {erro.param}: {erro.msg}</li>)
+                    this.setState({ erros: <ul className='mb-0'>{listaErros}</ul> })
+                }
+            })
+            .catch(erro => console.log(erro))
+
+        // apiRequest.post("/publications", formData)
+        //     .then(resposta => resposta.data)
+        //     .then(dados => {
+        //         if (dados.erros === undefined) {
+        //             alert('Publicação cadastrada com sucesso')
+        //             this.resetarDados()
+        //             this.props.atualizaPublicacoes()
+        //             this.props.fecharTelaCadastro()
+        //         } else {
+        //             const listaErros = dados.erros.map((erro) => <li key={erro.param}>Houve um erro no campo {erro.param}: {erro.msg}</li>)
+        //             this.setState({ erros: <ul className='mb-0'>{listaErros}</ul> })
+        //         }
+        //     })
+        //     .catch(erro => console.log(erro))
+    }
+
+    componentDidUpdate(prevProps) {
+        console.log(this.props.dados)
+        if (prevProps !== this.props) {
+            this.setState({ ...this.props.dados })
+        }
     }
 
     componentDidMount() {
-        this.addAutor()
+        if (this.state.autores.length === 0) {
+            this.addAutor()
+        }
     }
 
     render() {
@@ -93,12 +127,11 @@ export default class AddPublication extends Component {
             <div className="screen-form">
                 <Container maxWidth="sm" className="screen-form-container" >
                     <div className="screen-form-container-title-bar pt-2">
-                        <Typography variant="h5" component="h3" className='ml-2'>Cadastrar publicação </Typography>
-                        <Button color='secondary' size='small' onClick={(e) => this.props.closeFunction('none')}><CloseIcon /></Button>
+                        <Typography variant="h5" component="h3" className='ml-2'>{this.props.tipoEnvio} publicação </Typography>
+                        <Button color='secondary' size='small' onClick={this.resetarDados}><CloseIcon /></Button>
                     </div>
                     <form>
                         <TextField
-                            id="titulo"
                             name='titulo'
                             label="Título da Publicação"
                             fullWidth
@@ -106,10 +139,9 @@ export default class AddPublication extends Component {
                             value={this.state.titulo}
                             onChange={this.atualizarCampo}
                         />
-                        <FormControl style={{minWidth: 100}}>
-                            <InputLabel id="select-label-tipo">Tipo</InputLabel>
+                        <FormControl style={{ minWidth: 100 }}>
+                            <InputLabel>Tipo</InputLabel>
                             <Select
-                                id="tipo"
                                 name="tipo"
                                 value={this.state.tipo}
                                 onChange={this.atualizarCampo}
@@ -121,7 +153,6 @@ export default class AddPublication extends Component {
                         </FormControl>
 
                         <TextField
-                            id="local"
                             name="local"
                             label={`Título do(a) ${this.state.tipo}`}
                             fullWidth
@@ -130,10 +161,9 @@ export default class AddPublication extends Component {
                             onChange={this.atualizarCampo}
                         />
 
-                        <FormControl style={{minWidth: 100}}>
-                            <InputLabel id="select-label-tipo">Qualis</InputLabel>
+                        <FormControl style={{ minWidth: 100 }}>
+                            <InputLabel >Qualis</InputLabel>
                             <Select
-                                id="qualis"
                                 name="qualis"
                                 value={this.state.qualis}
                                 onChange={this.atualizarCampo}
@@ -152,15 +182,16 @@ export default class AddPublication extends Component {
                         </FormControl>
 
                         <div className="form-lista-autores">
-                            {this.state.autores.map((autor, indice) => <TextField
-                                id={`autor${indice}`}
-                                key={indice}
-                                label={`Nome do ${indice + 1}º autor`}
-                                fullWidth
-                                margin='normal'
-                                value={autor}
-                                onChange={(e) => this.atualizaAutor(e, indice)}
-                            />)}
+                            {this.state.autores.map((autor, indice) =>
+                                <TextField
+                                    key={indice}
+                                    label={`Nome do ${indice + 1}º autor`}
+                                    fullWidth
+                                    margin='normal'
+                                    value={autor}
+                                    onChange={(e) => this.atualizaAutor(e, indice)}
+                                />)
+                            }
                         </div>
                         <Button
                             variant="contained"
@@ -171,10 +202,9 @@ export default class AddPublication extends Component {
                         >
                             Adicionar outro autor
                     </Button>
-                        
+
                         <div>
                             <TextField
-                                id="ano-publicacao"
                                 name='anoPublicacao'
                                 label="Ano da Publicacao"
                                 margin='normal'
@@ -186,7 +216,6 @@ export default class AddPublication extends Component {
                         </div>
                         <div>
                             <TextField
-                                id="pagina-inicial"
                                 name='paginaInicial'
                                 label="Página Inicial"
                                 margin='normal'
@@ -196,7 +225,6 @@ export default class AddPublication extends Component {
                             />
                             <TextField
                                 className="ml-3"
-                                id="pagina-final"
                                 name='paginaFinal'
                                 label="Página Final"
                                 margin='normal'
@@ -206,15 +234,15 @@ export default class AddPublication extends Component {
                             />
                         </div>
                         <input
+                            id="comprovante-publicacao"
                             accept="image/*"
                             hidden
-                            id="contained-button-file"
                             multiple
                             type="file"
                             onChange={this.atualizaArquivo}
                         />
                         <div className='mt-4 mb-5'>
-                            <label htmlFor="contained-button-file">
+                            <label htmlFor="comprovante-publicacao">
                                 <Button
                                     variant="contained"
                                     component="span"
@@ -231,9 +259,9 @@ export default class AddPublication extends Component {
                             color="primary"
                             className="mb-3"
                             startIcon={<SaveAltIcon />}
-                            onClick={this.cadastrarPublicacao}
+                            onClick={this.enviarPublicacao}
                         >
-                            Cadastrar
+                            {this.props.tipoEnvio}
                         </Button>
                     </form>
                 </Container>

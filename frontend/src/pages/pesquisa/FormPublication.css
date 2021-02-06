@@ -11,15 +11,12 @@
 .screen-form-container{
     background-color: white;
     margin-top: 100px;
+    max-height: 800px;
+    overflow: auto;
+    scroll-behavior: smooth;   
 }
 
 .screen-form-container-title-bar{
     display: flex;
     justify-content: space-between;
-}
-
-.form-lista-autores{
-    max-height: 150px;
-    overflow: auto;
-    scroll-behavior: smooth;   
 }
