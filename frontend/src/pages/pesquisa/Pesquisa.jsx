@@ -11,6 +11,7 @@ import Autenticacao from '../../services/authentication'
 
 
 
+
 export default function Pesquisa(props) {
     
         if(!Autenticacao.isAuthenticade()){

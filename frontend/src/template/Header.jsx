@@ -1,5 +1,5 @@
 import './Header.css'
-import AutenticacaoUsuario from './AutenticacaoUsuario'
+import AutenticacaoUsuario from './UserAuth'
 
 export default function Header(props) {
     return (

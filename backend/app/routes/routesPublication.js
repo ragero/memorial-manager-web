@@ -1,8 +1,10 @@
 const controlerPublication = require('../controlers/controlerPublication')
 const middlewareAutenticacao = require('../authentication/authentication-middleware')
+const userModel = require('../models/modelPublication')
 const fs = require('fs')
 const multer = require('multer')
-const { Console } = require('console')
+
+
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         const dir = `./public/${req.user.email}/publications`
@@ -24,8 +26,8 @@ module.exports = (app) => {
 
     app.route(controlerPublication.routes().base)
         .get(middlewareAutenticacao.bearear, controlerPublication.getPublications())
-        .post(middlewareAutenticacao.bearear, upload.single('comprovante'), controlerPublication.addPublication())
-        .put(middlewareAutenticacao.bearear, upload.single('comprovante'), controlerPublication.updatePublication())
+        .post(middlewareAutenticacao.bearear, upload.single('comprovante'), userModel.validations(), controlerPublication.addPublication())
+        .put(middlewareAutenticacao.bearear, upload.single('comprovante'), userModel.validations(), controlerPublication.updatePublication())
     
     app.route(controlerPublication.routes().baseID)
         .get(middlewareAutenticacao.bearear, controlerPublication.getPublication())

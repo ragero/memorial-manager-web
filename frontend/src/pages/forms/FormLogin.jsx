@@ -26,7 +26,9 @@ function logar(e,  email, senha) {
             Autenticacao.login(dados)
             window.location.href = '/'
         }else{ 
+            console.log(resposta)
             alert('Usuário ou senha inválidos')
+
         }
         console.log(resposta)
     })

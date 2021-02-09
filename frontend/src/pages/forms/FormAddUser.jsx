@@ -29,7 +29,10 @@ export default function AddUser(props) {
                 alert('Usuário cadastrado com sucesso')
                 window.location.href = '/'
             }else{
-                alert('E-mail já utilizado na base de dados')
+                let aviso = 'Houve os seguinte erros: \n\n'
+                aviso+= resposta.erros.reduce((acumulador, erro) => `${acumulador} ${erro.msg}\n`,'')
+                alert(aviso)
+                
             }
         })
         .catch(erro => console.log(erro))

@@ -8,7 +8,6 @@ import './FormPublication.css'
 import { apiRequest } from '../../services/request'
 
 
-
 export default class AddPublication extends Component {
 
     constructor(props) {
@@ -62,6 +61,7 @@ export default class AddPublication extends Component {
     enviarPublicacao(e) {
         e.preventDefault()
         let formData = new FormData()
+        formData.append('_id', this.state._id)
         formData.append('titulo', this.state.titulo)
         formData.append('tipo', this.state.tipo)
         formData.append('local', this.state.local)
@@ -80,33 +80,22 @@ export default class AddPublication extends Component {
             data: formData
         })
             .then(resposta => resposta.data)
-            .then(dados => {
-                if (dados.erros === undefined) {
+            .then(resposta => {
+                console.log('======= Resposta da requisição =======')
+                console.log(resposta)
+                if (resposta.erros === undefined) {
                     alert('Publicação cadastrada com sucesso')
                     this.resetarDados()
                     this.props.atualizaPublicacoes()
                     this.props.fecharTelaCadastro()
                 } else {
-                    const listaErros = dados.erros.map((erro) => <li key={erro.param}>Houve um erro no campo {erro.param}: {erro.msg}</li>)
-                    this.setState({ erros: <ul className='mb-0'>{listaErros}</ul> })
+                    let aviso = 'Houve os seguinte erros: \n\n'
+                    aviso+= resposta.erros.reduce((acumulador, erro) => `${acumulador} ${erro.msg}\n`,'')
+                    alert(aviso)
                 }
             })
             .catch(erro => console.log(erro))
 
-        // apiRequest.post("/publications", formData)
-        //     .then(resposta => resposta.data)
-        //     .then(dados => {
-        //         if (dados.erros === undefined) {
-        //             alert('Publicação cadastrada com sucesso')
-        //             this.resetarDados()
-        //             this.props.atualizaPublicacoes()
-        //             this.props.fecharTelaCadastro()
-        //         } else {
-        //             const listaErros = dados.erros.map((erro) => <li key={erro.param}>Houve um erro no campo {erro.param}: {erro.msg}</li>)
-        //             this.setState({ erros: <ul className='mb-0'>{listaErros}</ul> })
-        //         }
-        //     })
-        //     .catch(erro => console.log(erro))
     }
 
     componentDidUpdate(prevProps) {
@@ -124,13 +113,21 @@ export default class AddPublication extends Component {
 
     render() {
         return (
+            
             <div className="screen-form">
+                
                 <Container maxWidth="sm" className="screen-form-container" >
                     <div className="screen-form-container-title-bar pt-2">
                         <Typography variant="h5" component="h3" className='ml-2'>{this.props.tipoEnvio} publicação </Typography>
                         <Button color='secondary' size='small' onClick={this.resetarDados}><CloseIcon /></Button>
                     </div>
                     <form>
+                        <TextField
+                            name='_id'
+                            type='hidden'
+                            margin='normal'
+                            value={this.state._id}
+                        />
                         <TextField
                             name='titulo'
                             label="Título da Publicação"
@@ -235,7 +232,7 @@ export default class AddPublication extends Component {
                         </div>
                         <input
                             id="comprovante-publicacao"
-                            accept="image/*"
+                            accept="application/pdf"
                             hidden
                             multiple
                             type="file"

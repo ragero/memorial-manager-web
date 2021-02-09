@@ -2,6 +2,17 @@ const { ObjectID } = require("mongodb")
 
 class DaoPublications {
 
+    processAuthors(authors){
+        const finalAuthors = authors.split(',').filter((author) => {
+            if(author.trim() != ''){
+                return true 
+            }else{
+                return false
+            }
+        })
+        return finalAuthors
+    }
+
     getPublications(user) {
         return new Promise((resolve, reject) => {
             collection.find({ email: user.email }, { projection: { _id: 0, publicacoes: 1 } }).toArray(function (err, result) {
@@ -16,10 +27,15 @@ class DaoPublications {
 
     }
 
-    addPublication(data) {
-        data.autores = data.autores.split(',')
+    addPublication(user, data) {
+        data._id = new ObjectID()
+        data.autores = this.processAuthors(data.autores)
+        data.anoPublicacao = Number(data.anoPublicacao)
+        data.paginaInicial = Number(data.paginaInicial)
+        data.paginaFinal = Number(data.paginaFinal)
+        
         return new Promise((resolve, reject) => {
-            collection.updateOne({ email: data.user.email },
+            collection.updateOne({ email: user.email },
                 {
                     $push: {
                         publicacoes: {
@@ -56,26 +72,31 @@ class DaoPublications {
     }
 
 
-    updatePublication(dados) {
+    updatePublication(data) {
         console.log('Dentro do update publications!!!!')
+        const idPublication = data._id
+        delete data._id
+        data.anoPublicacao = Number(data.anoPublicacao)
+        data.paginaInicial = Number(data.paginaInicial)
+        data.paginaFinal = Number(data.paginaFinal)
+        data.autores = this.processAuthors(data.autores)
+    
+        const newData = {}
+        Object.keys(data).forEach((key) => {
+            if (!((key === 'comprovante') && ((data['comprovante'] === 'undefined') || (data['comprovante'] === '')))){
+                newData[`publicacoes.$.${key}`] = data[key]
+            } 
+        })
+        console.log(newData)
         return new Promise((resolve, reject) => {
-            collection.updateOne({"publicacoes._id": ObjectID("601dc7d698acc158dc7e0867") },
-                { $set: { "publicacoes.$.titulo": "Puta que o paril!!!" } }, function (err, document) {
+            collection.updateOne({"publicacoes._id": ObjectID(idPublication) },
+                { $set: newData }, function (err, document) {
                     if (err) {
                         reject(err)
                     }
                     resolve(document)
                 })
         })
-        // db.memorial.updateOne(
-
-        // )
-
-        // const query = { name: "Steve Lobsters", "items.type": "pizza" };
-        // const updateDocument = {
-        //     $set: { "items.$.size": "extra large" }
-        // };
-        // const result = await collection.updateOne(query, updateDocument);
     }
 }
 

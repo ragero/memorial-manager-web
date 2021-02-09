@@ -1,8 +1,11 @@
 const daoUsers = require('../daos/daoUser')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const { validationResult } = require('express-validator')
 
 class ControlerUser{
+
+    
 
     routes(){
         return {
@@ -12,6 +15,8 @@ class ControlerUser{
             logout: '/app/users/logout'
         }    
     }
+
+    
 
     criaTokenJWT(usuario){
         console.log('Criando o JWT =================')
@@ -35,19 +40,24 @@ class ControlerUser{
 
     addUser(){
         return async (req,resp) =>{
-            req.body.senha = await this._gerarSenhaHash(req.body.senha)
-            console.log(req.body)
-            daoUsers.addUser(req.body)
-                .then((resultado) => {
-                    console.log('RESULTADO ================================')
-                    console.log(resultado)
-                    resp.json({status:'sucesso', msg: 'Usuário cadastrado com sucesso'})
-                })
-                .catch((erro) => {
-                    console.log('ERRO ================================')
-                    console.log(erro)
-                    resp.json({status:'erro', msg: 'E-mail já cadastrado no sistema'})
-                })
+            const errosVal = validationResult(req).array();
+            console.log(errosVal)
+            if (errosVal.length != 0) {
+                resp.json({ erros: errosVal })
+            } else {                        
+                req.body.senha = await this._gerarSenhaHash(req.body.senha)
+                daoUsers.addUser(req.body)
+                    .then((resultado) => {
+                        console.log('RESULTADO ================================')
+                        console.log(resultado)
+                        resp.json({status:'sucesso', msg: 'Usuário cadastrado com sucesso'})
+                    })
+                    .catch((erro) => {
+                        console.log('ERRO ================================')
+                        console.log(erro)
+                        resp.json({status:'erro', msg: 'E-mail já cadastrado no sistema'})
+                    })
+            }
         }
     }
 
@@ -88,8 +98,6 @@ class ControlerUser{
             resp.send('Remove users')
         }
     }
-
-    
 
 }
 
