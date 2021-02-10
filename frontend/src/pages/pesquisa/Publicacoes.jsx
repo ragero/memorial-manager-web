@@ -3,8 +3,6 @@ import { Component } from 'react'
 import FormPublication from './FormPublication'
 import Button from '@material-ui/core/Button'
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline'
-import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered'
-import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import './Publicacoes.css'
 import { apiRequest } from '../../services/request'
 import TablePublications from './TablePublications'
@@ -51,13 +49,9 @@ export default class Publicacoes extends Component {
                 return resposta.data
             })
             .then((resposta) => {
-                let listaPublicacoes = resposta[0].publicacoes
-                listaPublicacoes = listaPublicacoes.sort(function (p1, p2) {
-                    let resultado = parseInt(p1.anoPublicacao) > parseInt(p2.anoPublicacao) ? -10 : parseInt(p1.anoPublicacao) < p2.anoPublicacao ? 10 : 0
-                    resultado += p1.qualis.localeCompare(p2.qualis) * 5
-                    resultado += p1.titulo.localeCompare(p2.titulo)
-                    return resultado
-                });
+                let listaPublicacoes = resposta.map(entrada => entrada.publicacoes)
+
+                alert('aqui')
                 this.setState({ publicacoes: listaPublicacoes })
             })
             .catch((erro) => {
@@ -92,12 +86,6 @@ export default class Publicacoes extends Component {
                 <div className="publicacoes-botoes">
                     <Button variant="contained" onClick={(e) => { this.setState({ tipoEnvio: 'Cadastrar', displayForm: 'block', currentPublication: { ...initialStatePublication, autores: [''] } }) }}>
                         <AddCircleOutlineIcon className="mr-3" /> Adicionar Nova Publicação
-                    </Button>
-                    <Button variant="contained">
-                        <FormatListNumberedIcon className="mr-3" />Gerar Latex dos Itens
-                    </Button>
-                    <Button variant="contained">
-                        <LibraryBooksIcon className="mr-3"/>Gerar Caderno de comprovantes
                     </Button>
                 </div>
                 <hr />

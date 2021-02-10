@@ -11,7 +11,7 @@
 .screen-form-container{
     background-color: white;
     margin-top: 100px;
-    max-height: 800px;
+    max-height: 80vh;
     overflow: auto;
     scroll-behavior: smooth;   
 }

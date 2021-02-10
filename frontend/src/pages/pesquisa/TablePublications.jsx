@@ -67,7 +67,7 @@ function remover(id, atualizaPublicacoes) {
 
 }
 
-export default function TabelaPublicacoes(props) {
+export default function TablePublications(props) {
     const classes = useStyles();
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -87,7 +87,6 @@ export default function TabelaPublicacoes(props) {
 
     return (
         <React.Fragment>
-
             <Paper className={classes.root}>
                 <TableContainer className={classes.container}>
                     <Table stickyHeader aria-label="sticky table">
@@ -106,6 +105,7 @@ export default function TabelaPublicacoes(props) {
                         </TableHead>
                         <TableBody>
                             {props.dados.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                                console.log('===========ROWWWW=========')
                                 console.log(row)
                                 return (
                                     <TableRow hover role="checkbox" tabIndex={-1} key={row._id}>

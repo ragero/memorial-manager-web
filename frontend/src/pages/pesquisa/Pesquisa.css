@@ -1,0 +1,15 @@
+.pesquisa-botoes{
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    
+    padding: 30px 0px;
+}
+
+.itens-latex{
+    display: block;
+    width: 100%;
+    height: 700px;
+    overflow: auto;
+    margin: 15px 0px;
+}

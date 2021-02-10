@@ -7,7 +7,6 @@ import CloseIcon from '@material-ui/icons/Close'
 import './FormPublication.css'
 import { apiRequest } from '../../services/request'
 
-
 export default class AddPublication extends Component {
 
     constructor(props) {
@@ -46,7 +45,10 @@ export default class AddPublication extends Component {
     }
 
     atualizaArquivo(e) {
-        this.setState({ nomeArquivo: e.target.files[0].name, comprovante: e.target.files[0] })
+        if(e.target.files[0] !== undefined){
+            this.setState({ nomeArquivo: e.target.files[0].name, comprovante: e.target.files[0] })
+        }
+        
     }
 
 
@@ -113,9 +115,7 @@ export default class AddPublication extends Component {
 
     render() {
         return (
-            
             <div className="screen-form">
-                
                 <Container maxWidth="sm" className="screen-form-container" >
                     <div className="screen-form-container-title-bar pt-2">
                         <Typography variant="h5" component="h3" className='ml-2'>{this.props.tipoEnvio} publicação </Typography>
@@ -234,7 +234,6 @@ export default class AddPublication extends Component {
                             id="comprovante-publicacao"
                             accept="application/pdf"
                             hidden
-                            multiple
                             type="file"
                             onChange={this.atualizaArquivo}
                         />
