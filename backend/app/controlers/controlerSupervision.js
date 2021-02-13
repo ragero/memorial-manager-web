@@ -1,18 +1,17 @@
 const fs = require('fs')
-const daoPublications = require('../daos/daoPublications')
+const daoSupervisions = require('../daos/daoSupervisions')
 const { validationResult } = require('express-validator')
 
-class ControlerPublication {
-
+class ControlerSupervision {
 
     routes() {
         return {
-            base: '/app/publications',
-            baseID: `/app/publications/:id`
+            base: '/app/supervisions',
+            baseID: `/app/supervisions/:id`
         }
     }
 
-    addPublication() {
+    addSupervision() {
         return function (req, resp) {
             const errosVal = validationResult(req).array();
             if (errosVal.length != 0) {
@@ -22,33 +21,33 @@ class ControlerPublication {
                 if (req.file !== undefined) {
                     content['pathArquivo'] = req.file.path
                 }
-                daoPublications.addPublication(req.user, content)
+                daoSupervisions.addSupervision(req.user, content)
                     .then(resultado => resp.json(resultado))
                     .catch(erro => resp.json(erro))
             }
         }
     }
 
-    getPublications() {
+    getSupervisions() {
         return function (req, resp) {
-            daoPublications.getPublications(req.user)
+            daoSupervisions.getSupervisions(req.user)
                 .then(resultado => resp.json(resultado))
                 .catch(erro => resp.json(erro))
         }
     }
 
-    removePublication() {
+    removeSupervision() {
         return function (req, resp) {
             console.log('Body=====')
             console.log(req.body)
             console.log(req.params)
-            daoPublications.removePublication(req.user.email, req.params.id)
+            daoSupervisions.removeSupervision(req.user.email, req.params.id)
                 .then(resultado => resp.json(resultado))
                 .catch(erro => resp.json(erro))
         }
     }
 
-    updatePublication() {
+    updateSupervision() {
         return function (req, resp) {
             const errosVal = validationResult(req).array();
             if (errosVal.length != 0) {
@@ -60,7 +59,7 @@ class ControlerPublication {
                 } else {
                     delete content['comprovante']
                 }
-                daoPublications.getPublication(req.user, req.body._id)
+                daoSupervisions.getSupervision(req.user, req.body._id)
                     .then(resultado => {
                         let oldPath = undefined
                         if (resultado[0] !== undefined) {
@@ -69,7 +68,7 @@ class ControlerPublication {
                             }
                         }
                         fs.unlink(`./${oldPath}`, err => { console.log('===========\n==========\n===========', err) })
-                        daoPublications.updatePublication(content)
+                        daoSupervisions.updateSupervision(content)
                             .then(resultado => resp.json(resultado))
                             .catch(erro => resp.json(erro))
                     })
@@ -82,4 +81,4 @@ class ControlerPublication {
 
 }
 
-module.exports = new ControlerPublication()
+module.exports = new ControlerSupervision()

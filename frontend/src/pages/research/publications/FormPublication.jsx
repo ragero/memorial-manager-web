@@ -61,7 +61,7 @@ export default class AddPublication extends Component {
         let formData = new FormData()
         formData.append('_id', this.state._id)
         formData.append('titulo', this.state.titulo)
-        formData.append('tipo', this.state.tipo)
+        formData.append('tipoPublicacao', this.state.tipo)
         formData.append('local', this.state.local)
         formData.append('qualis', this.state.qualis)
         formData.append('autores', this.state.autores)

@@ -1,18 +1,17 @@
 const fs = require('fs')
-const daoPublications = require('../daos/daoPublications')
+const daoResearchGroups = require('../daos/daoResearchGroups')
 const { validationResult } = require('express-validator')
 
-class ControlerPublication {
-
+class ControlerResearchGroup {
 
     routes() {
         return {
-            base: '/app/publications',
-            baseID: `/app/publications/:id`
+            base: '/app/researchGroups',
+            baseID: `/app/researchGroups/:id`
         }
     }
 
-    addPublication() {
+    addResearchGroup() {
         return function (req, resp) {
             const errosVal = validationResult(req).array();
             if (errosVal.length != 0) {
@@ -22,33 +21,30 @@ class ControlerPublication {
                 if (req.file !== undefined) {
                     content['pathArquivo'] = req.file.path
                 }
-                daoPublications.addPublication(req.user, content)
+                daoResearchGroups.addResearchGroup(req.user, content)
                     .then(resultado => resp.json(resultado))
                     .catch(erro => resp.json(erro))
             }
         }
     }
 
-    getPublications() {
+    getResearchGroups() {
         return function (req, resp) {
-            daoPublications.getPublications(req.user)
+            daoResearchGroups.getResearchGroups(req.user)
                 .then(resultado => resp.json(resultado))
                 .catch(erro => resp.json(erro))
         }
     }
 
-    removePublication() {
+    removeResearchGroup() {
         return function (req, resp) {
-            console.log('Body=====')
-            console.log(req.body)
-            console.log(req.params)
-            daoPublications.removePublication(req.user.email, req.params.id)
+            daoResearchGroups.removeResearchGroup(req.user.email, req.params.id)
                 .then(resultado => resp.json(resultado))
                 .catch(erro => resp.json(erro))
         }
     }
 
-    updatePublication() {
+    updateResearchGroup() {
         return function (req, resp) {
             const errosVal = validationResult(req).array();
             if (errosVal.length != 0) {
@@ -60,16 +56,16 @@ class ControlerPublication {
                 } else {
                     delete content['comprovante']
                 }
-                daoPublications.getPublication(req.user, req.body._id)
+                daoResearchGroups.getResearchGroup(req.user, req.body._id)
                     .then(resultado => {
                         let oldPath = undefined
                         if (resultado[0] !== undefined) {
-                            if ((resultado[0]['publicacoes']['pathArquivo'] !== undefined)) {
-                                oldPath = resultado[0]['publicacoes']['pathArquivo']
+                            if ((resultado[0]['gruposPesquisa']['pathArquivo'] !== undefined)) {
+                                oldPath = resultado[0]['gruposPesquisa']['pathArquivo']
                             }
                         }
                         fs.unlink(`./${oldPath}`, err => { console.log('===========\n==========\n===========', err) })
-                        daoPublications.updatePublication(content)
+                        daoResearchGroups.updateResearchGroup(content)
                             .then(resultado => resp.json(resultado))
                             .catch(erro => resp.json(erro))
                     })
@@ -82,4 +78,4 @@ class ControlerPublication {
 
 }
 
-module.exports = new ControlerPublication()
+module.exports = new ControlerResearchGroup()

@@ -1,6 +1,13 @@
 const express = require('express')
 const cors = require('cors')
-const {routePublications,routeUsers,routeResearchProjects} = require('../app/routes/')
+const {
+    routePublications,
+    routeUsers,
+    routeResearchProjects,
+    routeResearchGroups,
+    routeResearchFeedbacks,
+    routeSupervision,
+    routeResearchEvents} = require('../app/routes/')
 const authenticationStrategy = require('../app/authentication/authentication-strategy')
 
 const app = express()
@@ -22,5 +29,9 @@ app.use((req,resp,next)=> {
 routePublications(app)
 routeUsers(app)
 routeResearchProjects(app)
+routeResearchGroups(app)
+routeResearchFeedbacks(app) 
+routeSupervision(app)
+routeResearchEvents(app)
 
 module.exports = app 
