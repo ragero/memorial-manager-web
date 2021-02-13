@@ -7,16 +7,16 @@ const multer = require('multer')
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        const dir = `./public/${req.user.email}/publications`
+        const dir = `./public/${req.user.email}/research/publications`
 
         if (!fs.existsSync(dir)) {
-            fs.mkdirSync(dir);
+            fs.mkdirSync(dir, {recursive : true});
         }
         cb(null, dir)
     },
     filename: (req, file, cb) => {
         const data = new Date()
-        cb(null, `${data.getFullYear()}-${data.getMonth()}-${data.getDay()}-${file.originalname}`)
+        cb(null, `${data.getFullYear()}-${data.getMonth()}-${data.getDay()}-${data.getHours()}-${data.getMinutes()}-${data.getSeconds()}-${file.originalname}`)
     }
 })
 
@@ -30,7 +30,6 @@ module.exports = (app) => {
         .put(middlewareAutenticacao.bearear, upload.single('comprovante'), userModel.validations(), controlerPublication.updatePublication())
     
     app.route(controlerPublication.routes().baseID)
-        .get(middlewareAutenticacao.bearear, controlerPublication.getPublication())
         .delete(middlewareAutenticacao.bearear, controlerPublication.removePublication())
         
         

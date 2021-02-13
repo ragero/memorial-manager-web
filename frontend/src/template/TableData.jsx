@@ -13,31 +13,31 @@ import EditIcon from '@material-ui/icons/Edit'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
 import PageviewIcon from '@material-ui/icons/Pageview'
 import Tooltip from '@material-ui/core/Tooltip'
-import { apiRequest, baseURLFiles } from '../../services/request'
+import { apiRequest, baseURLFiles } from '../services/request'
 
 
-const columns = [
-    { id: 'titulo', label: 'Título', minWidth: 250 },
-    { id: 'tipo', label: 'Tipo', minWidth: 50 },
-    {
-        id: 'anoPublicacao',
-        label: 'Ano',
-        minWidth: 50,
-        align: 'center',
-    },
-    {
-        id: 'qualis',
-        label: 'Qualis',
-        minWidth: 50,
-        align: 'center',
-    },
-    {
-        id: 'acoes',
-        label: 'Ações',
-        minWidth: 50,
-        align: 'center',
-    }
-];
+// const columns = [
+//     { id: 'titulo', label: 'Título', minWidth: 250 },
+//     { id: 'tipo', label: 'Tipo', minWidth: 50 },
+//     {
+//         id: 'anoPublicacao',
+//         label: 'Ano',
+//         minWidth: 50,
+//         align: 'center',
+//     },
+//     {
+//         id: 'qualis',
+//         label: 'Qualis',
+//         minWidth: 50,
+//         align: 'center',
+//     },
+//     {
+//         id: 'acoes',
+//         label: 'Ações',
+//         minWidth: 50,
+//         align: 'center',
+//     }
+// ];
 
 
 
@@ -50,8 +50,8 @@ const useStyles = makeStyles({
     },
 });
 
-function remover(id, atualizaPublicacoes) {
-    apiRequest.delete(`/publications/${id}`)
+function remover(id, atualizaPublicacoes, route) {
+    apiRequest.delete(`${route}/${id}`)
         .then(resposta => resposta.data)
         .then(resposta => {
             console.log(resposta.result)
@@ -71,7 +71,7 @@ export default function TablePublications(props) {
     const classes = useStyles();
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
-        
+    const columns = props.columns    
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -82,9 +82,9 @@ export default function TablePublications(props) {
         setPage(0);
     };
 
-    console.log('props==========')
-    console.log(props.atualizaPublicacoes)
-
+    
+    console.log(props.columns)
+    console.log(props.dados)
     return (
         <React.Fragment>
             <Paper className={classes.root}>
@@ -92,7 +92,7 @@ export default function TablePublications(props) {
                     <Table stickyHeader aria-label="sticky table">
                         <TableHead>
                             <TableRow>
-                                {columns.map((column) => (
+                                {props.columns.map((column) => (
                                     <TableCell
                                         key={column.id}
                                         align={column.align}
@@ -105,8 +105,6 @@ export default function TablePublications(props) {
                         </TableHead>
                         <TableBody>
                             {props.dados.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                                console.log('===========ROWWWW=========')
-                                console.log(row)
                                 return (
                                     <TableRow hover role="checkbox" tabIndex={-1} key={row._id}>
                                         {columns.map((column) => {
@@ -118,15 +116,22 @@ export default function TablePublications(props) {
                                                         <Tooltip title="Editar" aria-label="editar">
                                                             <Button onClick={(e) => {
                                                                 props.atualizarTipoEnvio('Atualizar')
-                                                                props.atualizarPublicacaoCorrente(row)
+                                                                props.atualizarItemCorrente(row)
                                                                 props.abrirTelaCadastro()
                                                             }}><EditIcon/></Button>
                                                         </Tooltip>
                                                         <Tooltip title="Remover" aria-label="remover">
-                                                            <Button color='secondary'><DeleteForeverIcon onClick={(e) => remover(row._id, props.atualizaPublicacoes)} /></Button>
+                                                            <Button color='secondary'>
+                                                                <DeleteForeverIcon 
+                                                                    onClick={(e) => {
+                                                                        const resp = window.confirm('Deseja realmente remover este item?')
+                                                                        if (resp === true){
+                                                                            remover(row._id, props.atualizarDados, props.route)
+                                                                        }
+                                                                    } }/>
+                                                                </Button>
                                                         </Tooltip>
                                                         <Tooltip title="Visualizar Comprovate" aria-label="visualizar">
-
                                                             <Button color='primary' disabled={!row.pathArquivo} target="_blank" href={`${baseURLFiles}/${row.pathArquivo}`}><PageviewIcon /></Button>
                                                         </Tooltip>
                                                     </TableCell>

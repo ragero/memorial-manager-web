@@ -1,6 +1,6 @@
 import {Switch, Route, Redirect} from 'react-router'
 import Home from '../pages/Home'
-import Pesquisa from '../pages/pesquisa/Pesquisa'
+import Pesquisa from '../pages/research/Pesquisa'
 import ProjetosExtensao from '../pages/ProjetosExtensao'
 import AtividadesAdministrativas from '../pages/AtividadesAdministrativas'
 import Premios from '../pages/Premios'

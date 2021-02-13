@@ -1,70 +1,36 @@
 const { ObjectID } = require("mongodb")
 
-class DaoPublications {
+class DaoResearchProjects {
 
-    processAuthors(authors) {
-        const finalAuthors = authors.split(',').filter((author) => {
-            if (author.trim() != '') {
-                return true
-            } else {
-                return false
-            }
-        })
-        return finalAuthors
-    }
+    preprocessData(data) {
+        data._id = new ObjectID()
+        data.anoInicio = Number(data.anoInicio)
+        data.anoFim = Number(data.anoFim)
+        data.coordena = Boolean(data.coordena)
+        data.fomento = Boolean(data.fomento)
 
-    preprocessData(data){
-        data.anoPublicacao = Number(data.anoPublicacao)
-        data.paginaInicial = Number(data.paginaInicial)
-        data.paginaFinal = Number(data.paginaFinal)
         return data
     }
 
-    getPublication(user, idPublication){
-        return new Promise((resolve, reject) => {
-            collection.aggregate([
-                {
-                    $match: {'email':user.email}
-                },
-                {
-                    $project : {publicacoes:1}
-                },
-                {
-                    $unwind: "$publicacoes"
-                },
-                {
-                    $match: {'publicacoes._id': ObjectID(idPublication)}
-                }
-            ]).toArray(function (err, result) {
-                if(err){
-                    reject(err)
-                }else{ 
-                    console.log(result)
-                    resolve(result)
-                }
-            });
-        })
-    }
-
-    getPublications(user) {
+    getResearchProject(user, idProject) {
         return new Promise((resolve, reject) => {
             collection.aggregate([
                 {
                     $match: { 'email': user.email }
                 },
                 {
-                    $project : {publicacoes:1}
+                    $project: { projetosPesquisa: 1 }
                 },
                 {
-                    $unwind: "$publicacoes"
+                    $unwind: "$projetosPesquisa"
                 },
                 {
-                    $sort: { "publicacoes.anoPublicacao": -1, "publicacoes.qualis": 1, "publicacoes.titulo": 1 }
+                    $match: { 'projetosPesquisa._id': ObjectID(idProject) }
                 }
             ]).toArray(function (err, result) {
-                if(err){
+                if (err) {
                     reject(err)
-                }else{ 
+                } else {
                     console.log(result)
                     resolve(result)
                 }
@@ -72,16 +38,41 @@ class DaoPublications {
         })
     }
 
-    addPublication(user, data) {
+    getResearchProjects(user) {
+        return new Promise((resolve, reject) => {
+            collection.aggregate([
+                {
+                    $match: { 'email': user.email }
+                },
+                {
+                    $project: { projetosPesquisa: 1 }
+                },
+                {
+                    $unwind: "$projetosPesquisa"
+                },
+                {
+                    $sort: { "projetosPesquisa.coordena": -1, "projetosPesquisa.anoInicio": -1, "publicacoes.comFomento": -1, "publicacoes.comTitulo": -1 }
+                }
+            ]).toArray(function (err, result) {
+                if (err) {
+                    reject(err)
+                } else {
+                    console.log(result)
+                    resolve(result)
+                }
+            });
+        })
+    }
+
+    addResearchProject(user, data) {
         data._id = new ObjectID()
-        data.autores = this.processAuthors(data.autores)
         data = this.preprocessData(data)
 
         return new Promise((resolve, reject) => {
             collection.updateOne({ email: user.email },
                 {
                     $push: {
-                        publicacoes: {
+                        projetosPesquisa: {
                             _id: new ObjectID(),
                             ...data
                         }
@@ -96,10 +87,10 @@ class DaoPublications {
 
     }
 
-    removePublication(id_user, idPublication) {
+    removeResearchProject(id_user, idResearchProject) {
         return new Promise((resolve, reject) => {
             collection.updateOne({ email: id_user },
-                { $pull: { publicacoes: { _id: ObjectID(idPublication) } } },
+                { $pull: { projetosPesquisa: { _id: ObjectID(idResearchProject) } } },
                 function (err, document) {
                     if (err) {
                         reject(err)
@@ -112,21 +103,23 @@ class DaoPublications {
     }
 
 
-    updatePublication(data) {
-        const idPublication = data._id
+    updateResearchProject(data) {
+        const idResearchProject = data._id
         delete data._id
-        data.autores = this.processAuthors(data.autores)
         data = this.preprocessData(data)
 
         const newData = {}
         Object.keys(data).forEach((key) => {
             if (!((key === 'comprovante') && ((data['comprovante'] === 'undefined') || (data['comprovante'] === '')))) {
-                newData[`publicacoes.$.${key}`] = data[key]
+                newData[`projetosPesquisa.$.${key}`] = data[key]
             }
         })
+        console.log('=======Dentro do updateReasearchProject======')
+        console.log('new data')
         console.log(newData)
+        console.log('=============')
         return new Promise((resolve, reject) => {
-            collection.updateOne({ "publicacoes._id": ObjectID(idPublication) },
+            collection.updateOne({ "projetosPesquisa._id": ObjectID(idResearchProject) },
                 { $set: newData }, function (err, document) {
                     if (err) {
                         reject(err)
@@ -137,4 +130,4 @@ class DaoPublications {
     }
 }
 
-module.exports = new DaoPublications()
+module.exports = new DaoResearchProjects()

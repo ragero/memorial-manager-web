@@ -13,7 +13,7 @@ class PublicationModel {
                 check('anoPublicacao').trim().isInt().withMessage('O ano da publicação deve ser um valor inteiro.'),
                 check('paginaInicial').trim().isInt().withMessage('A página inicial da publicação deve ser um valor inteiro.'),
                 check('paginaFinal').trim().isInt().withMessage('A página final da publicação deve ser um valor inteiro.'),
-                check('imagem')
+                check('comprovante')
                     .custom((value, { req }) => {
                         if(req.file !== undefined){
                             if (req.file.mimetype.startsWith('application/pdf')) {

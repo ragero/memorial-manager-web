@@ -8,7 +8,8 @@ import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import Publicacoes from './Publicacoes'
+import Publicacoes from './publications/Publicacoes'
+import ResearchProjects from './research-projects/ResearchProjects'
 import Autenticacao from '../../services/authentication'
 import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered'
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
@@ -153,8 +154,6 @@ export default function Pesquisa(props) {
                             className="mb-3"
                             onClick={
                                 (e) => {
-                                    console.log(refTexto)
-                                    alert('aqui')
                                     refTexto.current.select()
                                     document.execCommand('copy')
                                 }
@@ -193,10 +192,7 @@ export default function Pesquisa(props) {
                         <Typography variant="h5" component="h3">Projetos</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
-                        <Typography>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-                            sit amet blandit leo lobortis eget.
-                    </Typography>
+                        <ResearchProjects />
                     </AccordionDetails>
                 </Accordion>
                 <Accordion>

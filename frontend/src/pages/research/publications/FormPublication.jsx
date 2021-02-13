@@ -5,7 +5,7 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd'
 import SaveAltIcon from '@material-ui/icons/SaveAlt'
 import CloseIcon from '@material-ui/icons/Close'
 import './FormPublication.css'
-import { apiRequest } from '../../services/request'
+import { apiRequest } from '../../../services/request'
 
 export default class AddPublication extends Component {
 
@@ -25,9 +25,6 @@ export default class AddPublication extends Component {
             e.preventDefault()
         }
         this.props.fecharTelaCadastro()
-        //this.imagem.current.value = ''
-        //this.imagem.file.value = ''
-        //this.setState({...initialState})
     }
 
     atualizarCampo(e) {
@@ -48,7 +45,6 @@ export default class AddPublication extends Component {
         if(e.target.files[0] !== undefined){
             this.setState({ nomeArquivo: e.target.files[0].name, comprovante: e.target.files[0] })
         }
-        
     }
 
 
@@ -83,10 +79,8 @@ export default class AddPublication extends Component {
         })
             .then(resposta => resposta.data)
             .then(resposta => {
-                console.log('======= Resposta da requisição =======')
-                console.log(resposta)
                 if (resposta.erros === undefined) {
-                    alert('Publicação cadastrada com sucesso')
+                    alert(`${this.props.tipoCadastro} cadastrado com sucesso`)
                     this.resetarDados()
                     this.props.atualizaPublicacoes()
                     this.props.fecharTelaCadastro()
@@ -118,7 +112,7 @@ export default class AddPublication extends Component {
             <div className="screen-form">
                 <Container maxWidth="sm" className="screen-form-container" >
                     <div className="screen-form-container-title-bar pt-2">
-                        <Typography variant="h5" component="h3" className='ml-2'>{this.props.tipoEnvio} publicação </Typography>
+                        <Typography variant="h5" component="h3" className='ml-2'>{this.props.tipoEnvio} {this.props.tipoCadastro} </Typography>
                         <Button color='secondary' size='small' onClick={this.resetarDados}><CloseIcon /></Button>
                     </div>
                     <form>
@@ -146,6 +140,7 @@ export default class AddPublication extends Component {
                                 <MenuItem value={'Periódico'}>Periódico</MenuItem>
                                 <MenuItem value={'Conferência - Completo'}>Conferência - Completo</MenuItem>
                                 <MenuItem value={'Conferência - Resumo'}>Conferência - Resumo</MenuItem>
+                                <MenuItem value={'Relatório Técnico'}>Relatório Técnico</MenuItem>
                             </Select>
                         </FormControl>
 
