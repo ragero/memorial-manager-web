@@ -1,6 +1,6 @@
-const controlerResearchEvents = require('../controlers/controlerResearchEvents')
-const middlewareAutenticacao = require('../authentication/authentication-middleware')
-const modelReserachEvent = require('../models/modelResearchEvents')
+const controlerResearchEvents = require('../../controlers/research/controlerResearchEvents')
+const middlewareAutenticacao = require('../../authentication/authentication-middleware')
+const modelReserachEvent = require('../../models/research/modelResearchEvents')
 const fs = require('fs')
 const multer = require('multer')
 

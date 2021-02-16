@@ -1,17 +1,18 @@
 const fs = require('fs')
-const daoResearchEvents = require('../daos/daoResearchEvents')
+const daoInternships = require('../../daos/teaching/daoInternships')
 const { validationResult } = require('express-validator')
 
-class ControlerResearchEvent {
+class ControlerInternship {
+
 
     routes() {
         return {
-            base: '/app/researchEvents',
-            baseID: `/app/researchEvents/:id`
+            base: '/app/internships',
+            baseID: `/app/internships/:id`
         }
     }
 
-    addResearchEvent() {
+    addInternship() {
         return function (req, resp) {
             const errosVal = validationResult(req).array();
             if (errosVal.length != 0) {
@@ -21,30 +22,33 @@ class ControlerResearchEvent {
                 if (req.file !== undefined) {
                     content['pathArquivo'] = req.file.path
                 }
-                daoResearchEvents.addResearchEvent(req.user, content)
+                daoInternships.addInternship(req.user, content)
                     .then(resultado => resp.json(resultado))
                     .catch(erro => resp.json(erro))
             }
         }
     }
 
-    getResearchEvents() {
+    getInternships() {
         return function (req, resp) {
-            daoResearchEvents.getResearchEvents(req.user)
+            daoInternships.getInternships(req.user)
                 .then(resultado => resp.json(resultado))
                 .catch(erro => resp.json(erro))
         }
     }
 
-    removeResearchEvent() {
+    removeInternship() {
         return function (req, resp) {
-            daoResearchEvents.removeResearchEvent(req.user.email, req.params.id)
+            console.log('Body=====')
+            console.log(req.body)
+            console.log(req.params)
+            daoInternships.removeInternship(req.user.email, req.params.id)
                 .then(resultado => resp.json(resultado))
                 .catch(erro => resp.json(erro))
         }
     }
 
-    updateResearchEvent() {
+    updateInternship() {
         return function (req, resp) {
             const errosVal = validationResult(req).array();
             if (errosVal.length != 0) {
@@ -56,16 +60,16 @@ class ControlerResearchEvent {
                 } else {
                     delete content['comprovante']
                 }
-                daoResearchEvents.getResearchEvent(req.user, req.body._id)
+                daoInternships.getInternship(req.user, req.body._id)
                     .then(resultado => {
                         let oldPath = undefined
                         if (resultado[0] !== undefined) {
-                            if ((resultado[0]['eventosPesquisa']['pathArquivo'] !== undefined)) {
-                                oldPath = resultado[0]['eventosPesquisa']['pathArquivo']
+                            if ((resultado[0]['internships']['pathArquivo'] !== undefined)) {
+                                oldPath = resultado[0]['internships']['pathArquivo']
                             }
                         }
                         fs.unlink(`./${oldPath}`, err => { console.log('===========\n==========\n===========', err) })
-                        daoResearchEvents.updateResearchEvent(content)
+                        daoInternships.updateInternship(content)
                             .then(resultado => resp.json(resultado))
                             .catch(erro => resp.json(erro))
                     })
@@ -78,4 +82,4 @@ class ControlerResearchEvent {
 
 }
 
-module.exports = new ControlerResearchEvent()
+module.exports = new ControlerInternship()

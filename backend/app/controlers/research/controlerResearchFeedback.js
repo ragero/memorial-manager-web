@@ -1,18 +1,17 @@
 const fs = require('fs')
-const daoPublications = require('../daos/daoPublications')
+const daoResearchFeedbacks = require('../../daos/research/daoResearchFeedbacks')
 const { validationResult } = require('express-validator')
 
-class ControlerPublication {
-
+class ControlerResearchFeedback {
 
     routes() {
         return {
-            base: '/app/publications',
-            baseID: `/app/publications/:id`
+            base: '/app/researchFeedbacks',
+            baseID: `/app/researchFeedbacks/:id`
         }
     }
 
-    addPublication() {
+    addResearchFeedback() {
         return function (req, resp) {
             const errosVal = validationResult(req).array();
             if (errosVal.length != 0) {
@@ -22,33 +21,30 @@ class ControlerPublication {
                 if (req.file !== undefined) {
                     content['pathArquivo'] = req.file.path
                 }
-                daoPublications.addPublication(req.user, content)
+                daoResearchFeedbacks.addResearchFeedback(req.user, content)
                     .then(resultado => resp.json(resultado))
                     .catch(erro => resp.json(erro))
             }
         }
     }
 
-    getPublications() {
+    getResearchFeedbacks() {
         return function (req, resp) {
-            daoPublications.getPublications(req.user)
+            daoResearchFeedbacks.getResearchFeedbacks(req.user)
                 .then(resultado => resp.json(resultado))
                 .catch(erro => resp.json(erro))
         }
     }
 
-    removePublication() {
+    removeResearchFeedback() {
         return function (req, resp) {
-            console.log('Body=====')
-            console.log(req.body)
-            console.log(req.params)
-            daoPublications.removePublication(req.user.email, req.params.id)
+            daoResearchFeedbacks.removeResearchFeedback(req.user.email, req.params.id)
                 .then(resultado => resp.json(resultado))
                 .catch(erro => resp.json(erro))
         }
     }
 
-    updatePublication() {
+    updateResearchFeedback() {
         return function (req, resp) {
             const errosVal = validationResult(req).array();
             if (errosVal.length != 0) {
@@ -60,16 +56,16 @@ class ControlerPublication {
                 } else {
                     delete content['comprovante']
                 }
-                daoPublications.getPublication(req.user, req.body._id)
+                daoResearchFeedbacks.getResearchFeedback(req.user, req.body._id)
                     .then(resultado => {
                         let oldPath = undefined
                         if (resultado[0] !== undefined) {
-                            if ((resultado[0]['publicacoes']['pathArquivo'] !== undefined)) {
-                                oldPath = resultado[0]['publicacoes']['pathArquivo']
+                            if ((resultado[0]['pareceresesquisa']['pathArquivo'] !== undefined)) {
+                                oldPath = resultado[0]['pareceresPesquisa']['pathArquivo']
                             }
                         }
                         fs.unlink(`./${oldPath}`, err => { console.log('===========\n==========\n===========', err) })
-                        daoPublications.updatePublication(content)
+                        daoResearchFeedbacks.updateResearchFeedback(content)
                             .then(resultado => resp.json(resultado))
                             .catch(erro => resp.json(erro))
                     })
@@ -82,4 +78,4 @@ class ControlerPublication {
 
 }
 
-module.exports = new ControlerPublication()
+module.exports = new ControlerResearchFeedback()

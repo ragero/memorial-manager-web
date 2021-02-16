@@ -3,7 +3,7 @@ const BearerStrategy = require('passport-http-bearer').Strategy
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const LocalStrategy = require('passport-local').Strategy
-const daoUser = require('../daos/daoUser')
+const daoUser = require('../daos/user/daoUser')
 
 async function comparaSenha(senha, senhaHash) {
     const resposta = await bcrypt.compare(senha, senhaHash)

@@ -1,6 +1,6 @@
-const controlerPublication = require('../controlers/controlerPublication')
-const middlewareAutenticacao = require('../authentication/authentication-middleware')
-const userModel = require('../models/modelPublication')
+const controlerPublication = require('../../controlers/research/controlerPublication')
+const middlewareAutenticacao = require('../../authentication/authentication-middleware')
+const publicationModel = require('../../models/research/modelPublication')
 const fs = require('fs')
 const multer = require('multer')
 
@@ -26,8 +26,8 @@ module.exports = (app) => {
 
     app.route(controlerPublication.routes().base)
         .get(middlewareAutenticacao.bearear, controlerPublication.getPublications())
-        .post(middlewareAutenticacao.bearear, upload.single('comprovante'), userModel.validations(), controlerPublication.addPublication())
-        .put(middlewareAutenticacao.bearear, upload.single('comprovante'), userModel.validations(), controlerPublication.updatePublication())
+        .post(middlewareAutenticacao.bearear, upload.single('comprovante'), publicationModel.validations(), controlerPublication.addPublication())
+        .put(middlewareAutenticacao.bearear, upload.single('comprovante'), publicationModel.validations(), controlerPublication.updatePublication())
     
     app.route(controlerPublication.routes().baseID)
         .delete(middlewareAutenticacao.bearear, controlerPublication.removePublication())

@@ -1,4 +1,4 @@
-const daoUsers = require('../daos/daoUser')
+const daoUsers = require('../../daos/user/daoUser')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const { validationResult } = require('express-validator')

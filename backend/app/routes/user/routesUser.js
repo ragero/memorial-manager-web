@@ -1,7 +1,7 @@
-const controlerUser = require('../controlers/controlerUser')
+const controlerUser = require('../../controlers/user/controlerUser')
 const passport = require('passport')
-const middlewareAutenticacao = require('../authentication/authentication-middleware')
-const userModel = require('../models/modelUser')
+const middlewareAutenticacao = require('../../authentication/authentication-middleware')
+const userModel = require('../../models/user/modelUser')
 
 module.exports = (app) => {
 

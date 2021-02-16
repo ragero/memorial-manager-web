@@ -1,17 +1,17 @@
 const fs = require('fs')
-const daoSupervisions = require('../daos/daoSupervisions')
+const daoResearchEvents = require('../../daos/research/daoResearchEvents')
 const { validationResult } = require('express-validator')
 
-class ControlerSupervision {
+class ControlerResearchEvent {
 
     routes() {
         return {
-            base: '/app/supervisions',
-            baseID: `/app/supervisions/:id`
+            base: '/app/researchEvents',
+            baseID: `/app/researchEvents/:id`
         }
     }
 
-    addSupervision() {
+    addResearchEvent() {
         return function (req, resp) {
             const errosVal = validationResult(req).array();
             if (errosVal.length != 0) {
@@ -21,33 +21,30 @@ class ControlerSupervision {
                 if (req.file !== undefined) {
                     content['pathArquivo'] = req.file.path
                 }
-                daoSupervisions.addSupervision(req.user, content)
+                daoResearchEvents.addResearchEvent(req.user, content)
                     .then(resultado => resp.json(resultado))
                     .catch(erro => resp.json(erro))
             }
         }
     }
 
-    getSupervisions() {
+    getResearchEvents() {
         return function (req, resp) {
-            daoSupervisions.getSupervisions(req.user)
+            daoResearchEvents.getResearchEvents(req.user)
                 .then(resultado => resp.json(resultado))
                 .catch(erro => resp.json(erro))
         }
     }
 
-    removeSupervision() {
+    removeResearchEvent() {
         return function (req, resp) {
-            console.log('Body=====')
-            console.log(req.body)
-            console.log(req.params)
-            daoSupervisions.removeSupervision(req.user.email, req.params.id)
+            daoResearchEvents.removeResearchEvent(req.user.email, req.params.id)
                 .then(resultado => resp.json(resultado))
                 .catch(erro => resp.json(erro))
         }
     }
 
-    updateSupervision() {
+    updateResearchEvent() {
         return function (req, resp) {
             const errosVal = validationResult(req).array();
             if (errosVal.length != 0) {
@@ -59,16 +56,16 @@ class ControlerSupervision {
                 } else {
                     delete content['comprovante']
                 }
-                daoSupervisions.getSupervision(req.user, req.body._id)
+                daoResearchEvents.getResearchEvent(req.user, req.body._id)
                     .then(resultado => {
                         let oldPath = undefined
                         if (resultado[0] !== undefined) {
-                            if ((resultado[0]['publicacoes']['pathArquivo'] !== undefined)) {
-                                oldPath = resultado[0]['publicacoes']['pathArquivo']
+                            if ((resultado[0]['eventosPesquisa']['pathArquivo'] !== undefined)) {
+                                oldPath = resultado[0]['eventosPesquisa']['pathArquivo']
                             }
                         }
                         fs.unlink(`./${oldPath}`, err => { console.log('===========\n==========\n===========', err) })
-                        daoSupervisions.updateSupervision(content)
+                        daoResearchEvents.updateResearchEvent(content)
                             .then(resultado => resp.json(resultado))
                             .catch(erro => resp.json(erro))
                     })
@@ -81,4 +78,4 @@ class ControlerSupervision {
 
 }
 
-module.exports = new ControlerSupervision()
+module.exports = new ControlerResearchEvent()

@@ -1,6 +1,6 @@
-const controlerSupervision = require('../controlers/controlerSupervision')
-const middlewareAutenticacao = require('../authentication/authentication-middleware')
-const userModel = require('../models/modelSupervision')
+const controlerSupervision = require('../../controlers/research/controlerSupervision')
+const middlewareAutenticacao = require('../../authentication/authentication-middleware')
+const supervisionModel = require('../../models/research/modelSupervision')
 const fs = require('fs')
 const multer = require('multer')
 
@@ -26,8 +26,8 @@ module.exports = (app) => {
 
     app.route(controlerSupervision.routes().base)
         .get(middlewareAutenticacao.bearear, controlerSupervision.getSupervisions())
-        .post(middlewareAutenticacao.bearear, upload.single('comprovante'), userModel.validations(), controlerSupervision.addSupervision())
-        .put(middlewareAutenticacao.bearear, upload.single('comprovante'), userModel.validations(), controlerSupervision.updateSupervision())
+        .post(middlewareAutenticacao.bearear, upload.single('comprovante'), supervisionModel.validations(), controlerSupervision.addSupervision())
+        .put(middlewareAutenticacao.bearear, upload.single('comprovante'), supervisionModel.validations(), controlerSupervision.updateSupervision())
     
     app.route(controlerSupervision.routes().baseID)
         .delete(middlewareAutenticacao.bearear, controlerSupervision.removeSupervision())

@@ -1,6 +1,6 @@
-const controlerResearchGroups = require('../controlers/controlerResearchGroups')
-const middlewareAutenticacao = require('../authentication/authentication-middleware')
-const modelReserachGroup = require('../models/modelResearchGroups')
+const controlerResearchGroups = require('../../controlers/research/controlerResearchGroups')
+const middlewareAutenticacao = require('../../authentication/authentication-middleware')
+const modelReserachGroup = require('../../models/research/modelResearchGroups')
 const fs = require('fs')
 const multer = require('multer')
 

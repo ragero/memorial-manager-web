@@ -1,17 +1,17 @@
 const fs = require('fs')
-const daoResearchGroups = require('../daos/daoResearchGroups')
+const daoResearchProjects = require('../../daos/research/daoResearchProjects')
 const { validationResult } = require('express-validator')
 
-class ControlerResearchGroup {
+class ControlerResearchProject {
 
     routes() {
         return {
-            base: '/app/researchGroups',
-            baseID: `/app/researchGroups/:id`
+            base: '/app/researchProjects',
+            baseID: `/app/researchProjects/:id`
         }
     }
 
-    addResearchGroup() {
+    addResearchProject() {
         return function (req, resp) {
             const errosVal = validationResult(req).array();
             if (errosVal.length != 0) {
@@ -21,30 +21,30 @@ class ControlerResearchGroup {
                 if (req.file !== undefined) {
                     content['pathArquivo'] = req.file.path
                 }
-                daoResearchGroups.addResearchGroup(req.user, content)
+                daoResearchProjects.addResearchProject(req.user, content)
                     .then(resultado => resp.json(resultado))
                     .catch(erro => resp.json(erro))
             }
         }
     }
 
-    getResearchGroups() {
+    getResearchProjects() {
         return function (req, resp) {
-            daoResearchGroups.getResearchGroups(req.user)
+            daoResearchProjects.getResearchProjects(req.user)
                 .then(resultado => resp.json(resultado))
                 .catch(erro => resp.json(erro))
         }
     }
 
-    removeResearchGroup() {
+    removeResearchProject() {
         return function (req, resp) {
-            daoResearchGroups.removeResearchGroup(req.user.email, req.params.id)
+            daoResearchProjects.removeResearchProject(req.user.email, req.params.id)
                 .then(resultado => resp.json(resultado))
                 .catch(erro => resp.json(erro))
         }
     }
 
-    updateResearchGroup() {
+    updateResearchProject() {
         return function (req, resp) {
             const errosVal = validationResult(req).array();
             if (errosVal.length != 0) {
@@ -56,16 +56,16 @@ class ControlerResearchGroup {
                 } else {
                     delete content['comprovante']
                 }
-                daoResearchGroups.getResearchGroup(req.user, req.body._id)
+                daoResearchProjects.getResearchProject(req.user, req.body._id)
                     .then(resultado => {
                         let oldPath = undefined
                         if (resultado[0] !== undefined) {
-                            if ((resultado[0]['gruposPesquisa']['pathArquivo'] !== undefined)) {
-                                oldPath = resultado[0]['gruposPesquisa']['pathArquivo']
+                            if ((resultado[0]['projetosPesquisa']['pathArquivo'] !== undefined)) {
+                                oldPath = resultado[0]['projetosPesquisa']['pathArquivo']
                             }
                         }
                         fs.unlink(`./${oldPath}`, err => { console.log('===========\n==========\n===========', err) })
-                        daoResearchGroups.updateResearchGroup(content)
+                        daoResearchProjects.updateResearchProject(content)
                             .then(resultado => resp.json(resultado))
                             .catch(erro => resp.json(erro))
                     })
@@ -78,4 +78,4 @@ class ControlerResearchGroup {
 
 }
 
-module.exports = new ControlerResearchGroup()
+module.exports = new ControlerResearchProject()
