@@ -11,7 +11,16 @@ const {routeUsers} = require('../app/routes/user')
 const {
     routeDisciplines,
     routeInternships,
-    routeEvaluations} = require('../app/routes/teatching')
+    routeProcessEvaluations} = require('../app/routes/teatching')
+const {
+    routeComissions,
+    routeBoards,
+    routeEvaluations} = require('../app/routes/administration')
+const {
+    routeExtensionProjects,
+    routePresentations,
+    routeEventOrganization} = require('../app/routes/extension')
+
 const authenticationStrategy = require('../app/authentication/authentication-strategy')
 
 const app = express()
@@ -40,5 +49,11 @@ routeResearchEvents(app)
 routeDisciplines(app)
 routeInternships(app)
 routeEvaluations(app)
+routeComissions(app)
+routeBoards(app)
+routeProcessEvaluations(app)
+routeExtensionProjects(app)
+routePresentations(app)
+routeEventOrganization(app)
 
 module.exports = app 
