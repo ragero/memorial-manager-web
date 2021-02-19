@@ -11,11 +11,11 @@ const {routeUsers} = require('../app/routes/user')
 const {
     routeDisciplines,
     routeInternships,
-    routeProcessEvaluations} = require('../app/routes/teatching')
+    routeEvaluations} = require('../app/routes/teatching')
 const {
     routeComissions,
     routeBoards,
-    routeEvaluations} = require('../app/routes/administration')
+    routeProcessEvaluations} = require('../app/routes/administration')
 const {
     routeExtensionProjects,
     routePresentations,

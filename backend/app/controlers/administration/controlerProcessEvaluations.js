@@ -1,5 +1,5 @@
 const fs = require('fs')
-const daoEvaluations = require('../../daos/research/daoEvaluations')
+const daoProcessEvaluations = require('../../daos/administration/daoProcessEvaluations')
 const { validationResult } = require('express-validator')
 
 class ControlerProcessEvaluation {
@@ -11,7 +11,7 @@ class ControlerProcessEvaluation {
         }
     }
 
-    addEvaluation() {
+    addProcessEvaluation() {
         return function (req, resp) {
             const errosVal = validationResult(req).array();
             if (errosVal.length != 0) {
@@ -21,30 +21,30 @@ class ControlerProcessEvaluation {
                 if (req.file !== undefined) {
                     content['pathArquivo'] = req.file.path
                 }
-                daoEvaluations.addEvaluation(req.user, content)
+                daoProcessEvaluations.addProcessEvaluation(req.user, content)
                     .then(resultado => resp.json(resultado))
                     .catch(erro => resp.json(erro))
             }
         }
     }
 
-    getEvaluationdaoEvaluations() {
+    getProcessEvaluations() {
         return function (req, resp) {
-            daoEvaluations.getEvaluationdaoEvaluations(req.user)
+            daoProcessEvaluations.getProcessEvaluations(req.user)
                 .then(resultado => resp.json(resultado))
                 .catch(erro => resp.json(erro))
         }
     }
 
-    removeEvaluation() {
+    removeProcessEvaluation() {
         return function (req, resp) {
-            daoEvaluations.removeEvaluation(req.user.email, req.params.id)
+            daoProcessEvaluations.removeProcessEvaluation(req.user.email, req.params.id)
                 .then(resultado => resp.json(resultado))
                 .catch(erro => resp.json(erro))
         }
     }
 
-    updateEvaluation() {
+    updateProcessEvaluation() {
         return function (req, resp) {
             const errosVal = validationResult(req).array();
             if (errosVal.length != 0) {
@@ -56,7 +56,7 @@ class ControlerProcessEvaluation {
                 } else {
                     delete content['comprovante']
                 }
-                daoEvaluations.getEvaluation(req.user, req.body._id)
+                daoProcessEvaluations.getProcessEvaluation(req.user, req.body._id)
                     .then(resultado => {
                         let oldPath = undefined
                         if (resultado[0] !== undefined) {
@@ -65,7 +65,7 @@ class ControlerProcessEvaluation {
                             }
                         }
                         fs.unlink(`./${oldPath}`, err => { console.log('===========\n==========\n===========', err) })
-                        daoEvaluations.updateEvaluation(content)
+                        daoProcessEvaluations.updateProcessEvaluation(content)
                             .then(resultado => resp.json(resultado))
                             .catch(erro => resp.json(erro))
                     })

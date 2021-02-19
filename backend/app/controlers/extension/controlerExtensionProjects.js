@@ -1,5 +1,5 @@
 const fs = require('fs')
-const daoExtensionProjects = require('../../daos/Extension/daoExtensionProjects')
+const daoExtensionProjects = require('../../daos/extension/daoExtensionProjects')
 const { validationResult } = require('express-validator')
 
 class ControlerExtensionProject {

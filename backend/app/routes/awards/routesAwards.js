@@ -1,6 +1,6 @@
-const controlerAwards = require('../../controlers/extension/controlerAwards')
+const controlerAwards = require('../../controlers/awards/controlerAwards')
 const middlewareAutenticacao = require('../../authentication/authentication-middleware')
-const modelReserachProject = require('../../models/Extension/modelAwards')
+const modelReserachProject = require('../../models/awards/modelAwards')
 const fs = require('fs')
 const multer = require('multer')
 

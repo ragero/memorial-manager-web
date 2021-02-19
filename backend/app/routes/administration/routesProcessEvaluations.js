@@ -1,6 +1,6 @@
-const controlerProcessEvaluations = require('../../controlers/research/controlerProcessEvaluations')
+const controlerProcessEvaluations = require('../../controlers/administration/controlerProcessEvaluations')
 const middlewareAutenticacao = require('../../authentication/authentication-middleware')
-const modelReserachEvent = require('../../models/research/modelProcessEvaluations')
+const modelReserachEvent = require('../../models/administration/modelProcessEvaluations')
 const fs = require('fs')
 const multer = require('multer')
 

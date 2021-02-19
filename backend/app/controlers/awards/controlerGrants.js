@@ -2,7 +2,7 @@ const fs = require('fs')
 const daoGrants = require('../../daos/awards/daoGrants')
 const { validationResult } = require('express-validator')
 
-class ControlerPresentation {
+class ControlerGrants {
 
     routes() {
         return {
@@ -11,7 +11,7 @@ class ControlerPresentation {
         }
     }
 
-    addPresentation() {
+    addGrant() {
         return function (req, resp) {
             const errosVal = validationResult(req).array();
             if (errosVal.length != 0) {
@@ -21,7 +21,7 @@ class ControlerPresentation {
                 if (req.file !== undefined) {
                     content['pathArquivo'] = req.file.path
                 }
-                daoGrants.addPresentation(req.user, content)
+                daoGrants.addGrant(req.user, content)
                     .then(resultado => resp.json(resultado))
                     .catch(erro => resp.json(erro))
             }
@@ -36,15 +36,15 @@ class ControlerPresentation {
         }
     }
 
-    removePresentation() {
+    removeGrant() {
         return function (req, resp) {
-            daoGrants.removePresentation(req.user.email, req.params.id)
+            daoGrants.removeGrant(req.user.email, req.params.id)
                 .then(resultado => resp.json(resultado))
                 .catch(erro => resp.json(erro))
         }
     }
 
-    updatePresentation() {
+    updateGrant() {
         return function (req, resp) {
             const errosVal = validationResult(req).array();
             if (errosVal.length != 0) {
@@ -56,7 +56,7 @@ class ControlerPresentation {
                 } else {
                     delete content['comprovante']
                 }
-                daoGrants.getPresentation(req.user, req.body._id)
+                daoGrants.getGrant(req.user, req.body._id)
                     .then(resultado => {
                         let oldPath = undefined
                         if (resultado[0] !== undefined) {
@@ -65,7 +65,7 @@ class ControlerPresentation {
                             }
                         }
                         fs.unlink(`./${oldPath}`, err => { console.log('===========\n==========\n===========', err) })
-                        daoGrants.updatePresentation(content)
+                        daoGrants.updateGrant(content)
                             .then(resultado => resp.json(resultado))
                             .catch(erro => resp.json(erro))
                     })
@@ -78,4 +78,4 @@ class ControlerPresentation {
 
 }
 
-module.exports = new ControlerPresentation()
+module.exports = new ControlerGrants()

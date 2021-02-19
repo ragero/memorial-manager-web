@@ -1,17 +1,17 @@
 const fs = require('fs')
-const daoPresentations = require('../../daos/Extension/daoPresentations')
+const daoEventOrganizations = require('../../daos/extension/daoEventOrganizations')
 const { validationResult } = require('express-validator')
 
-class ControlerPresentation {
+class ControlerEventOrganizations {
 
     routes() {
         return {
-            base: '/app/presentations',
-            baseID: `/app/presentations/:id`
+            base: '/app/eventOrganizations',
+            baseID: `/app/eventOrganizations/:id`
         }
     }
 
-    addPresentation() {
+    addEventOrganization() {
         return function (req, resp) {
             const errosVal = validationResult(req).array();
             if (errosVal.length != 0) {
@@ -21,30 +21,30 @@ class ControlerPresentation {
                 if (req.file !== undefined) {
                     content['pathArquivo'] = req.file.path
                 }
-                daoPresentations.addPresentation(req.user, content)
+                daoEventOrganizations.addEventOrganization(req.user, content)
                     .then(resultado => resp.json(resultado))
                     .catch(erro => resp.json(erro))
             }
         }
     }
 
-    getPresentations() {
+    getEventOrganizations() {
         return function (req, resp) {
-            daoPresentations.getPresentations(req.user)
+            daoEventOrganizations.getEventOrganizations(req.user)
                 .then(resultado => resp.json(resultado))
                 .catch(erro => resp.json(erro))
         }
     }
 
-    removePresentation() {
+    removeEventOrganization() {
         return function (req, resp) {
-            daoPresentations.removePresentation(req.user.email, req.params.id)
+            daoEventOrganizations.removeEventOrganization(req.user.email, req.params.id)
                 .then(resultado => resp.json(resultado))
                 .catch(erro => resp.json(erro))
         }
     }
 
-    updatePresentation() {
+    updateEventOrganization() {
         return function (req, resp) {
             const errosVal = validationResult(req).array();
             if (errosVal.length != 0) {
@@ -56,16 +56,16 @@ class ControlerPresentation {
                 } else {
                     delete content['comprovante']
                 }
-                daoPresentations.getPresentation(req.user, req.body._id)
+                daoEventOrganizations.getEventOrganization(req.user, req.body._id)
                     .then(resultado => {
                         let oldPath = undefined
                         if (resultado[0] !== undefined) {
-                            if ((resultado[0]['apresentacoes']['pathArquivo'] !== undefined)) {
-                                oldPath = resultado[0]['apresentacoes']['pathArquivo']
+                            if ((resultado[0]['organizacoesEventos']['pathArquivo'] !== undefined)) {
+                                oldPath = resultado[0]['organizacoesEventos']['pathArquivo']
                             }
                         }
                         fs.unlink(`./${oldPath}`, err => { console.log('===========\n==========\n===========', err) })
-                        daoPresentations.updatePresentation(content)
+                        daoEventOrganizations.updateEventOrganization(content)
                             .then(resultado => resp.json(resultado))
                             .catch(erro => resp.json(erro))
                     })
@@ -78,4 +78,4 @@ class ControlerPresentation {
 
 }
 
-module.exports = new ControlerPresentation()
+module.exports = new ControlerEventOrganizations()

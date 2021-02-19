@@ -1,6 +1,6 @@
 const controlerEventOrganizations = require('../../controlers/extension/controlerEventOrganizations')
 const middlewareAutenticacao = require('../../authentication/authentication-middleware')
-const modelReserachProject = require('../../models/Extension/modelEventOrganizations')
+const modelReserachProject = require('../../models/extension/modelEventOrganizations')
 const fs = require('fs')
 const multer = require('multer')
 

@@ -1,6 +1,6 @@
-const controlerComissions = require('../../controlers/research/controlerComissions')
+const controlerComissions = require('../../controlers/administration/controlerComissions')
 const middlewareAutenticacao = require('../../authentication/authentication-middleware')
-const modelReserachEvent = require('../../models/research/modelComissions')
+const modelReserachEvent = require('../../models/administration/modelComissions')
 const fs = require('fs')
 const multer = require('multer')
 

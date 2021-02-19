@@ -1,9 +1,9 @@
-const routeProfessionalAcitivy = require('./routesProfessionalActivities')
+const routeProfessionalActivity = require('./routesProfessionalActivities')
 const routeAcademicFormation = require('./routesAcademicFormations')
 const routeComplementaryFormation = require('./routesComplementaryFormations')
 
 module.exports = {
-    routeProfessionalAcitivy, 
+    routeProfessionalActivity, 
     routeAcademicFormation,
     routeComplementaryFormation
 }

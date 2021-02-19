@@ -1,4 +1,4 @@
-const controlerAcademicFormations = require('../../controlers/research/controlerAcademicFormations')
+const controlerAcademicFormations = require('../../controlers/formation/controlerAcademicFormations')
 const middlewareAutenticacao = require('../../authentication/authentication-middleware')
 const modelAcademicFormations = require('../../models/formation/modelAcademicFormations')
 const fs = require('fs')
@@ -26,10 +26,10 @@ module.exports = (app) => {
 
     app.route(controlerAcademicFormations.routes().base)
         .get(middlewareAutenticacao.bearear, controlerAcademicFormations.getAcademicFormations())
-        .post(middlewareAutenticacao.bearear, upload.single('comprovante'), modelAcademicFormations.validations(), controlerAcademicFormations.addResearchEvent())
-        .put(middlewareAutenticacao.bearear, upload.single('comprovante'), modelAcademicFormations.validations(), controlerAcademicFormations.updateResearchEvent())
+        .post(middlewareAutenticacao.bearear, upload.single('comprovante'), modelAcademicFormations.validations(), controlerAcademicFormations.addAcademicFormation())
+        .put(middlewareAutenticacao.bearear, upload.single('comprovante'), modelAcademicFormations.validations(), controlerAcademicFormations.updateAcademicFormation())
     
     app.route(controlerAcademicFormations.routes().baseID)
-        .delete(middlewareAutenticacao.bearear, controlerAcademicFormations.removeResearchEvent())
+        .delete(middlewareAutenticacao.bearear, controlerAcademicFormations.removeAcademicFormation())
 
 }

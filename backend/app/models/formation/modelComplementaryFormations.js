@@ -1,5 +1,4 @@
 const { check } = require('express-validator');
-const modelEventOrganizations = require('../extension/modelEventOrganizations');
 
 class ComplementaryFormationsModel{
      validations() {
@@ -29,4 +28,4 @@ class ComplementaryFormationsModel{
 
 }
 
-module.export = new ComplementaryFormationsModel()
+module.exports = new ComplementaryFormationsModel()

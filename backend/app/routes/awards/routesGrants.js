@@ -1,6 +1,6 @@
-const controlerGrants = require('../../controlers/extension/controlerGrants')
+const controlerGrants = require('../../controlers/awards/controlerGrants')
 const middlewareAutenticacao = require('../../authentication/authentication-middleware')
-const modelReserachProject = require('../../models/Extension/modelGrants')
+const modelReserachProject = require('../../models/awards/modelGrants')
 const fs = require('fs')
 const multer = require('multer')
 
@@ -26,11 +26,11 @@ module.exports = (app) => {
 
     app.route(controlerGrants.routes().base)
         .get(middlewareAutenticacao.bearear, controlerGrants.getGrants())
-        .post(middlewareAutenticacao.bearear, upload.single('comprovante'), modelReserachProject.validations(), controlerGrants.addAward())
-        .put(middlewareAutenticacao.bearear, upload.single('comprovante'), modelReserachProject.validations(), controlerGrants.updateAward())
+        .post(middlewareAutenticacao.bearear, upload.single('comprovante'), modelReserachProject.validations(), controlerGrants.addGrant())
+        .put(middlewareAutenticacao.bearear, upload.single('comprovante'), modelReserachProject.validations(), controlerGrants.updateGrant())
     
     app.route(controlerGrants.routes().baseID)
-        .delete(middlewareAutenticacao.bearear, controlerGrants.removeAward())
+        .delete(middlewareAutenticacao.bearear, controlerGrants.removeGrant())
         
         
 

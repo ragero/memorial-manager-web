@@ -1,6 +1,6 @@
-const controlerHonors = require('../../controlers/extension/controlerHonors')
+const controlerHonors = require('../../controlers/awards/controlerHonors')
 const middlewareAutenticacao = require('../../authentication/authentication-middleware')
-const modelReserachProject = require('../../models/Extension/modelHonors')
+const modelReserachProject = require('../../models/awards/modelHonors')
 const fs = require('fs')
 const multer = require('multer')
 
@@ -26,11 +26,11 @@ module.exports = (app) => {
 
     app.route(controlerHonors.routes().base)
         .get(middlewareAutenticacao.bearear, controlerHonors.getHonors())
-        .post(middlewareAutenticacao.bearear, upload.single('comprovante'), modelReserachProject.validations(), controlerHonors.addAward())
-        .put(middlewareAutenticacao.bearear, upload.single('comprovante'), modelReserachProject.validations(), controlerHonors.updateAward())
+        .post(middlewareAutenticacao.bearear, upload.single('comprovante'), modelReserachProject.validations(), controlerHonors.addHonor())
+        .put(middlewareAutenticacao.bearear, upload.single('comprovante'), modelReserachProject.validations(), controlerHonors.updateHonor())
     
     app.route(controlerHonors.routes().baseID)
-        .delete(middlewareAutenticacao.bearear, controlerHonors.removeAward())
+        .delete(middlewareAutenticacao.bearear, controlerHonors.removeHonor())
         
         
 

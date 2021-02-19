@@ -2,7 +2,7 @@ const fs = require('fs')
 const daoComplementaryFormations = require('../../daos/formation/daoComplementaryFormations')
 const { validationResult } = require('express-validator')
 
-class ControlerAdademicFormation {
+class ControlerComplementaryFormation {
 
     routes() {
         return {
@@ -11,7 +11,7 @@ class ControlerAdademicFormation {
         }
     }
 
-    addAdademicFormation() {
+    addComplementaryFormation() {
         return function (req, resp) {
             const errosVal = validationResult(req).array();
             if (errosVal.length != 0) {
@@ -21,7 +21,7 @@ class ControlerAdademicFormation {
                 if (req.file !== undefined) {
                     content['pathArquivo'] = req.file.path
                 }
-                daoComplementaryFormations.addAdademicFormation(req.user, content)
+                daoComplementaryFormations.addComplementaryFormation(req.user, content)
                     .then(resultado => resp.json(resultado))
                     .catch(erro => resp.json(erro))
             }
@@ -36,15 +36,15 @@ class ControlerAdademicFormation {
         }
     }
 
-    removeAdademicFormation() {
+    removeComplementaryFormation() {
         return function (req, resp) {
-            daoComplementaryFormations.removeAdademicFormation(req.user.email, req.params.id)
+            daoComplementaryFormations.removeComplementaryFormation(req.user.email, req.params.id)
                 .then(resultado => resp.json(resultado))
                 .catch(erro => resp.json(erro))
         }
     }
 
-    updateAdademicFormation() {
+    updateComplementaryFormation() {
         return function (req, resp) {
             const errosVal = validationResult(req).array();
             if (errosVal.length != 0) {
@@ -56,7 +56,7 @@ class ControlerAdademicFormation {
                 } else {
                     delete content['comprovante']
                 }
-                daoComplementaryFormations.getAdademicFormation(req.user, req.body._id)
+                daoComplementaryFormations.getComplementaryFormation(req.user, req.body._id)
                     .then(resultado => {
                         let oldPath = undefined
                         if (resultado[0] !== undefined) {
@@ -65,7 +65,7 @@ class ControlerAdademicFormation {
                             }
                         }
                         fs.unlink(`./${oldPath}`, err => { console.log('===========\n==========\n===========', err) })
-                        daoComplementaryFormations.updateAdademicFormation(content)
+                        daoComplementaryFormations.updateComplementaryFormation(content)
                             .then(resultado => resp.json(resultado))
                             .catch(erro => resp.json(erro))
                     })
@@ -76,4 +76,4 @@ class ControlerAdademicFormation {
 
 }
 
-module.exports = new ControlerAdademicFormation()
+module.exports = new ControlerComplementaryFormation()

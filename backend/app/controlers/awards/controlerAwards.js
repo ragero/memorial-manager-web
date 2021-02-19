@@ -1,8 +1,8 @@
 const fs = require('fs')
-const daoAwards = require('../../daos/Extension/daoAwards')
+const daoAwards = require('../../daos/awards/daoAwards')
 const { validationResult } = require('express-validator')
 
-class ControlerPresentation {
+class ControlerAwards {
 
     routes() {
         return {
@@ -11,7 +11,7 @@ class ControlerPresentation {
         }
     }
 
-    addPresentation() {
+    addAward() {
         return function (req, resp) {
             const errosVal = validationResult(req).array();
             if (errosVal.length != 0) {
@@ -21,7 +21,7 @@ class ControlerPresentation {
                 if (req.file !== undefined) {
                     content['pathArquivo'] = req.file.path
                 }
-                daoAwards.addPresentation(req.user, content)
+                daoAwards.addAward(req.user, content)
                     .then(resultado => resp.json(resultado))
                     .catch(erro => resp.json(erro))
             }
@@ -36,15 +36,15 @@ class ControlerPresentation {
         }
     }
 
-    removePresentation() {
+    removeAward() {
         return function (req, resp) {
-            daoAwards.removePresentation(req.user.email, req.params.id)
+            daoAwards.removeAward(req.user.email, req.params.id)
                 .then(resultado => resp.json(resultado))
                 .catch(erro => resp.json(erro))
         }
     }
 
-    updatePresentation() {
+    updateAward() {
         return function (req, resp) {
             const errosVal = validationResult(req).array();
             if (errosVal.length != 0) {
@@ -56,7 +56,7 @@ class ControlerPresentation {
                 } else {
                     delete content['comprovante']
                 }
-                daoAwards.getPresentation(req.user, req.body._id)
+                daoAwards.getAward(req.user, req.body._id)
                     .then(resultado => {
                         let oldPath = undefined
                         if (resultado[0] !== undefined) {
@@ -65,7 +65,7 @@ class ControlerPresentation {
                             }
                         }
                         fs.unlink(`./${oldPath}`, err => { console.log('===========\n==========\n===========', err) })
-                        daoAwards.updatePresentation(content)
+                        daoAwards.updateAward(content)
                             .then(resultado => resp.json(resultado))
                             .catch(erro => resp.json(erro))
                     })
@@ -78,4 +78,4 @@ class ControlerPresentation {
 
 }
 
-module.exports = new ControlerPresentation()
+module.exports = new ControlerAwards()

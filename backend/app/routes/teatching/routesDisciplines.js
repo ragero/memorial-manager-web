@@ -1,6 +1,6 @@
 const controlerDiscipline = require('../../controlers/teaching/controlerDisciplines')
 const middlewareAutenticacao = require('../../authentication/authentication-middleware')
-const disciplineModel = require('../../models/teatching/modelDisciplines')
+const disciplineModel = require('../../models/teaching/modelDisciplines')
 const fs = require('fs')
 const multer = require('multer')
 

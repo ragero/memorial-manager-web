@@ -1,6 +1,6 @@
-const controlerProfessionalActivities = require('../../controlers/research/controlerProfessionalActivities')
+const controlerProfessionalActivities = require('../../controlers/formation/controlerProfessionalActivities')
 const middlewareAutenticacao = require('../../authentication/authentication-middleware')
-const modelProfessionalActivities = require('../../models/research/modelProfessionalActivities')
+const modelProfessionalActivities = require('../../models/formation/modelProfessionalActivities')
 const fs = require('fs')
 const multer = require('multer')
 
@@ -26,10 +26,10 @@ module.exports = (app) => {
 
     app.route(controlerProfessionalActivities.routes().base)
         .get(middlewareAutenticacao.bearear, controlerProfessionalActivities.getProfessionalActivities())
-        .post(middlewareAutenticacao.bearear, upload.single('comprovante'), modelProfessionalActivities.validations(), controlerProfessionalActivities.addResearchEvent())
-        .put(middlewareAutenticacao.bearear, upload.single('comprovante'), modelProfessionalActivities.validations(), controlerProfessionalActivities.updateResearchEvent())
+        .post(middlewareAutenticacao.bearear, upload.single('comprovante'), modelProfessionalActivities.validations(), controlerProfessionalActivities.addProfessionalActivity())
+        .put(middlewareAutenticacao.bearear, upload.single('comprovante'), modelProfessionalActivities.validations(), controlerProfessionalActivities.updateProfessionalActivity())
     
     app.route(controlerProfessionalActivities.routes().baseID)
-        .delete(middlewareAutenticacao.bearear, controlerProfessionalActivities.removeResearchEvent())
+        .delete(middlewareAutenticacao.bearear, controlerProfessionalActivities.removeProfessionalActivity())
 
 }

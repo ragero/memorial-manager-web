@@ -1,6 +1,6 @@
-const controlerInternship = require('../../controlers/teatching/controlerInternships')
+const controlerInternship = require('../../controlers/teaching/controlerInternships')
 const middlewareAutenticacao = require('../../authentication/authentication-middleware')
-const internshipModel = require('../../models/teatching/modelInternships')
+const internshipModel = require('../../models/teaching/modelInternships')
 const fs = require('fs')
 const multer = require('multer')
 

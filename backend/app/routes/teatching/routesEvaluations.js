@@ -1,6 +1,6 @@
-const controlerEvaluation = require('../../controlers/teatching/controlerEvaluations')
+const controlerEvaluation = require('../../controlers/teaching/controlerEvaluations')
 const middlewareAutenticacao = require('../../authentication/authentication-middleware')
-const evaluationModel = require('../../models/teatching/modelEvaluations')
+const evaluationModel = require('../../models/teaching/modelEvaluations')
 const fs = require('fs')
 const multer = require('multer')
 

@@ -1,4 +1,4 @@
-const controlerComplementaryFormations = require('../../controlers/research/controlerComplementaryFormations')
+const controlerComplementaryFormations = require('../../controlers/formation/controlerComplementaryFormations')
 const middlewareAutenticacao = require('../../authentication/authentication-middleware')
 const modelComplementaryFormations = require('../../models/formation/modelComplementaryFormations')
 const fs = require('fs')
@@ -26,10 +26,10 @@ module.exports = (app) => {
 
     app.route(controlerComplementaryFormations.routes().base)
         .get(middlewareAutenticacao.bearear, controlerComplementaryFormations.getComplementaryFormations())
-        .post(middlewareAutenticacao.bearear, upload.single('comprovante'), modelComplementaryFormations.validations(), controlerComplementaryFormations.addResearchEvent())
-        .put(middlewareAutenticacao.bearear, upload.single('comprovante'), modelComplementaryFormations.validations(), controlerComplementaryFormations.updateResearchEvent())
+        .post(middlewareAutenticacao.bearear, upload.single('comprovante'), modelComplementaryFormations.validations(), controlerComplementaryFormations.addComplementaryFormation())
+        .put(middlewareAutenticacao.bearear, upload.single('comprovante'), modelComplementaryFormations.validations(), controlerComplementaryFormations.updateComplementaryFormation())
     
     app.route(controlerComplementaryFormations.routes().baseID)
-        .delete(middlewareAutenticacao.bearear, controlerComplementaryFormations.removeResearchEvent())
+        .delete(middlewareAutenticacao.bearear, controlerComplementaryFormations.removeComplementaryFormation())
 
 }

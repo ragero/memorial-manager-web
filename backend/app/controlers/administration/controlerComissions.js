@@ -1,5 +1,5 @@
 const fs = require('fs')
-const daoComissions = require('../../daos/research/daoComissions')
+const daoComissions = require('../../daos/administration/daoComissions')
 const { validationResult } = require('express-validator')
 
 class ControlerComission {

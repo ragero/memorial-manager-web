@@ -1,6 +1,6 @@
-const controlerBoards = require('../../controlers/research/controlerBoards')
+const controlerBoards = require('../../controlers/administration/controlerBoards')
 const middlewareAutenticacao = require('../../authentication/authentication-middleware')
-const modelReserachEvent = require('../../models/research/modelBoards')
+const modelReserachEvent = require('../../models/administration/modelBoards')
 const fs = require('fs')
 const multer = require('multer')
 

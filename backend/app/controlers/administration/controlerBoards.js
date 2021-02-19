@@ -1,5 +1,5 @@
 const fs = require('fs')
-const daoBoards = require('../../daos/research/daoBoards')
+const daoBoards = require('../../daos/administration/daoBoards')
 const { validationResult } = require('express-validator')
 
 class ControlerBoard {

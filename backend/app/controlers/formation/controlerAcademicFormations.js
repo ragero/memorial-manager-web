@@ -2,7 +2,7 @@ const fs = require('fs')
 const daoAcademicFormations = require('../../daos/formation/daoAcademicFormations')
 const { validationResult } = require('express-validator')
 
-class ControlerAdademicFormation {
+class ControlerAcademicFormation {
 
     routes() {
         return {
@@ -11,7 +11,7 @@ class ControlerAdademicFormation {
         }
     }
 
-    addAdademicFormation() {
+    addAcademicFormation() {
         return function (req, resp) {
             const errosVal = validationResult(req).array();
             if (errosVal.length != 0) {
@@ -21,7 +21,7 @@ class ControlerAdademicFormation {
                 if (req.file !== undefined) {
                     content['pathArquivo'] = req.file.path
                 }
-                daoAcademicFormations.addAdademicFormation(req.user, content)
+                daoAcademicFormations.addAcademicFormation(req.user, content)
                     .then(resultado => resp.json(resultado))
                     .catch(erro => resp.json(erro))
             }
@@ -36,15 +36,15 @@ class ControlerAdademicFormation {
         }
     }
 
-    removeAdademicFormation() {
+    removeAcademicFormation() {
         return function (req, resp) {
-            daoAcademicFormations.removeAdademicFormation(req.user.email, req.params.id)
+            daoAcademicFormations.removeAcademicFormation(req.user.email, req.params.id)
                 .then(resultado => resp.json(resultado))
                 .catch(erro => resp.json(erro))
         }
     }
 
-    updateAdademicFormation() {
+    updateAcademicFormation() {
         return function (req, resp) {
             const errosVal = validationResult(req).array();
             if (errosVal.length != 0) {
@@ -56,7 +56,7 @@ class ControlerAdademicFormation {
                 } else {
                     delete content['comprovante']
                 }
-                daoAcademicFormations.getAdademicFormation(req.user, req.body._id)
+                daoAcademicFormations.getAcademicFormation(req.user, req.body._id)
                     .then(resultado => {
                         let oldPath = undefined
                         if (resultado[0] !== undefined) {
@@ -65,7 +65,7 @@ class ControlerAdademicFormation {
                             }
                         }
                         fs.unlink(`./${oldPath}`, err => { console.log('===========\n==========\n===========', err) })
-                        daoAcademicFormations.updateAdademicFormation(content)
+                        daoAcademicFormations.updateAcademicFormation(content)
                             .then(resultado => resp.json(resultado))
                             .catch(erro => resp.json(erro))
                     })
@@ -78,4 +78,4 @@ class ControlerAdademicFormation {
 
 }
 
-module.exports = new ControlerAdademicFormation()
+module.exports = new ControlerAcademicFormation()

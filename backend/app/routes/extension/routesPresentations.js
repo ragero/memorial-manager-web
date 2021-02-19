@@ -1,6 +1,6 @@
 const controlerPresentations = require('../../controlers/extension/controlerPresentations')
 const middlewareAutenticacao = require('../../authentication/authentication-middleware')
-const modelReserachProject = require('../../models/Extension/modelPresentations')
+const modelReserachProject = require('../../models/extension/modelPresentations')
 const fs = require('fs')
 const multer = require('multer')
 

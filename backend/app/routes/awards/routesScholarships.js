@@ -1,6 +1,6 @@
-const controlerScholarships = require('../../controlers/extension/controlerScholarships')
+const controlerScholarships = require('../../controlers/awards/controlerScholarships')
 const middlewareAutenticacao = require('../../authentication/authentication-middleware')
-const modelReserachProject = require('../../models/Extension/modelScholarships')
+const modelReserachProject = require('../../models/awards/modelScholarships')
 const fs = require('fs')
 const multer = require('multer')
 

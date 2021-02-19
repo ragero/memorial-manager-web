@@ -1,8 +1,8 @@
 const fs = require('fs')
-const daoAwards = require('../../daos/Extension/daoAwards')
+const daoScholarships = require('../../daos/awards/daoScholarships')
 const { validationResult } = require('express-validator')
 
-class ControlerAwards {
+class ControlerScholarships {
 
     routes() {
         return {
@@ -11,7 +11,7 @@ class ControlerAwards {
         }
     }
 
-    addAward() {
+    addScholarship() {
         return function (req, resp) {
             const errosVal = validationResult(req).array();
             if (errosVal.length != 0) {
@@ -21,30 +21,30 @@ class ControlerAwards {
                 if (req.file !== undefined) {
                     content['pathArquivo'] = req.file.path
                 }
-                daoAwards.addAward(req.user, content)
+                daoScholarships.addScholarship(req.user, content)
                     .then(resultado => resp.json(resultado))
                     .catch(erro => resp.json(erro))
             }
         }
     }
 
-    getAwards() {
+    getScholarships() {
         return function (req, resp) {
-            daoAwards.getAwards(req.user)
+            daoScholarships.getScholarships(req.user)
                 .then(resultado => resp.json(resultado))
                 .catch(erro => resp.json(erro))
         }
     }
 
-    removeAward() {
+    removeScholarship() {
         return function (req, resp) {
-            daoAwards.removeAward(req.user.email, req.params.id)
+            daoScholarships.removeScholarship(req.user.email, req.params.id)
                 .then(resultado => resp.json(resultado))
                 .catch(erro => resp.json(erro))
         }
     }
 
-    updateAward() {
+    updateScholarship() {
         return function (req, resp) {
             const errosVal = validationResult(req).array();
             if (errosVal.length != 0) {
@@ -56,7 +56,7 @@ class ControlerAwards {
                 } else {
                     delete content['comprovante']
                 }
-                daoAwards.getAward(req.user, req.body._id)
+                daoScholarships.getScholarship(req.user, req.body._id)
                     .then(resultado => {
                         let oldPath = undefined
                         if (resultado[0] !== undefined) {
@@ -65,7 +65,7 @@ class ControlerAwards {
                             }
                         }
                         fs.unlink(`./${oldPath}`, err => { console.log('===========\n==========\n===========', err) })
-                        daoAwards.updateAward(content)
+                        daoScholarships.updateScholarship(content)
                             .then(resultado => resp.json(resultado))
                             .catch(erro => resp.json(erro))
                     })
@@ -78,4 +78,4 @@ class ControlerAwards {
 
 }
 
-module.exports = new ControlerAwards()
+module.exports = new ControlerScholarships()
