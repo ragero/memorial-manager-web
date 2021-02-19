@@ -20,6 +20,15 @@ const {
     routeExtensionProjects,
     routePresentations,
     routeEventOrganization} = require('../app/routes/extension')
+const {
+    routeProfessionalActivity,
+    routeAcademicFormation,
+    routeComplementaryFormation} = require('../app/routes/formation')
+const {
+    routeAwards,
+    routeScholarships,
+    routeGrants,
+    routeHonors} = require('../app/routes/awards')
 
 const authenticationStrategy = require('../app/authentication/authentication-strategy')
 
@@ -55,5 +64,12 @@ routeProcessEvaluations(app)
 routeExtensionProjects(app)
 routePresentations(app)
 routeEventOrganization(app)
+routeProfessionalActivity(app)
+routeAcademicFormation(app)
+routeComplementaryFormation(app)
+routeAwards(app)
+routeScholarships(app)
+routeGrants(app)
+routeHonors(app)
 
 module.exports = app 
