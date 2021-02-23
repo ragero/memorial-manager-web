@@ -20,10 +20,10 @@ class ControlerEvaluation {
             } else {
                 const content = { ...req.body }
                 if (req.file !== undefined) {
-                    content['pathArquivo'] = req.file.path
+                    content['filePath'] = req.file.path
                 }
                 daoEvaluations.addEvaluation(req.user, content)
-                    .then(resultado => resp.json(resultado))
+                    .then(result => resp.json(result))
                     .catch(erro => resp.json(erro))
             }
         }
@@ -32,7 +32,7 @@ class ControlerEvaluation {
     getEvaluations() {
         return function (req, resp) {
             daoEvaluations.getEvaluations(req.user)
-                .then(resultado => resp.json(resultado))
+                .then(result => resp.json(result))
                 .catch(erro => resp.json(erro))
         }
     }
@@ -43,7 +43,7 @@ class ControlerEvaluation {
             console.log(req.body)
             console.log(req.params)
             daoEvaluations.removeEvaluation(req.user.email, req.params.id)
-                .then(resultado => resp.json(resultado))
+                .then(result => resp.json(result))
                 .catch(erro => resp.json(erro))
         }
     }
@@ -56,21 +56,21 @@ class ControlerEvaluation {
             } else {
                 const content = { ...req.body }
                 if (req.file !== undefined) {
-                    content['pathArquivo'] = req.file.path
+                    content['filePath'] = req.file.path
                 } else {
-                    delete content['comprovante']
+                    delete content['proof']
                 }
                 daoEvaluations.getEvaluation(req.user, req.body._id)
-                    .then(resultado => {
+                    .then(result => {
                         let oldPath = undefined
-                        if (resultado[0] !== undefined) {
-                            if ((resultado[0]['evaluations']['pathArquivo'] !== undefined)) {
-                                oldPath = resultado[0]['evaluations']['pathArquivo']
+                        if (result[0] !== undefined) {
+                            if ((result[0]['evaluations']['filePath'] !== undefined)) {
+                                oldPath = result[0]['evaluations']['filePath']
                             }
                         }
                         fs.unlink(`./${oldPath}`, err => { console.log('===========\n==========\n===========', err) })
                         daoEvaluations.updateEvaluation(content)
-                            .then(resultado => resp.json(resultado))
+                            .then(result => resp.json(result))
                             .catch(erro => resp.json(erro))
                     })
                     .catch(erro => resp.json({ erro }))

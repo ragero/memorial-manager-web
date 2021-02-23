@@ -24,3 +24,17 @@
                         "menu rodape";
 }
 
+.item-memorial{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+
+.item-memorial-buttons{
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}

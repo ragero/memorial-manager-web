@@ -26,8 +26,8 @@ module.exports = (app) => {
 
     app.route(controlerResearchProjects.routes().base)
         .get(middlewareAutenticacao.bearear, controlerResearchProjects.getResearchProjects())
-        .post(middlewareAutenticacao.bearear, upload.single('comprovante'), modelReserachProject.validations(), controlerResearchProjects.addResearchProject())
-        .put(middlewareAutenticacao.bearear, upload.single('comprovante'), modelReserachProject.validations(), controlerResearchProjects.updateResearchProject())
+        .post(middlewareAutenticacao.bearear, upload.single('proof'), modelReserachProject.validations(), controlerResearchProjects.addResearchProject())
+        .put(middlewareAutenticacao.bearear, upload.single('proof'), modelReserachProject.validations(), controlerResearchProjects.updateResearchProject())
     
     app.route(controlerResearchProjects.routes().baseID)
         .delete(middlewareAutenticacao.bearear, controlerResearchProjects.removeResearchProject())

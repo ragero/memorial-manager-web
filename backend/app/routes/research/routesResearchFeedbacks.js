@@ -26,8 +26,8 @@ module.exports = (app) => {
 
     app.route(controlerResearchFeedbacks.routes().base)
         .get(middlewareAutenticacao.bearear, controlerResearchFeedbacks.getResearchFeedbacks())
-        .post(middlewareAutenticacao.bearear, upload.single('comprovante'), modelReserachFeedback.validations(), controlerResearchFeedbacks.addResearchFeedback())
-        .put(middlewareAutenticacao.bearear, upload.single('comprovante'), modelReserachFeedback.validations(), controlerResearchFeedbacks.updateResearchFeedback())
+        .post(middlewareAutenticacao.bearear, upload.single('proof'), modelReserachFeedback.validations(), controlerResearchFeedbacks.addResearchFeedback())
+        .put(middlewareAutenticacao.bearear, upload.single('proof'), modelReserachFeedback.validations(), controlerResearchFeedbacks.updateResearchFeedback())
     
     app.route(controlerResearchFeedbacks.routes().baseID)
         .delete(middlewareAutenticacao.bearear, controlerResearchFeedbacks.removeResearchFeedback())

@@ -26,8 +26,8 @@ module.exports = (app) => {
 
     app.route(controlerAcademicFormations.routes().base)
         .get(middlewareAutenticacao.bearear, controlerAcademicFormations.getAcademicFormations())
-        .post(middlewareAutenticacao.bearear, upload.single('comprovante'), modelAcademicFormations.validations(), controlerAcademicFormations.addAcademicFormation())
-        .put(middlewareAutenticacao.bearear, upload.single('comprovante'), modelAcademicFormations.validations(), controlerAcademicFormations.updateAcademicFormation())
+        .post(middlewareAutenticacao.bearear, upload.single('proof'), modelAcademicFormations.validations(), controlerAcademicFormations.addAcademicFormation())
+        .put(middlewareAutenticacao.bearear, upload.single('proof'), modelAcademicFormations.validations(), controlerAcademicFormations.updateAcademicFormation())
     
     app.route(controlerAcademicFormations.routes().baseID)
         .delete(middlewareAutenticacao.bearear, controlerAcademicFormations.removeAcademicFormation())

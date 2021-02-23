@@ -26,8 +26,8 @@ module.exports = (app) => {
 
     app.route(controlerBoards.routes().base)
         .get(middlewareAutenticacao.bearear, controlerBoards.getBoards())
-        .post(middlewareAutenticacao.bearear, upload.single('comprovante'), modelReserachEvent.validations(), controlerBoards.addBoard())
-        .put(middlewareAutenticacao.bearear, upload.single('comprovante'), modelReserachEvent.validations(), controlerBoards.updateBoard())
+        .post(middlewareAutenticacao.bearear, upload.single('proof'), modelReserachEvent.validations(), controlerBoards.addBoard())
+        .put(middlewareAutenticacao.bearear, upload.single('proof'), modelReserachEvent.validations(), controlerBoards.updateBoard())
     
     app.route(controlerBoards.routes().baseID)
         .delete(middlewareAutenticacao.bearear, controlerBoards.removeBoard())

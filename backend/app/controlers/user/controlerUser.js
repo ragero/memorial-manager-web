@@ -23,7 +23,7 @@ class ControlerUser{
         console.log(usuario)
         const payload = {
             id: usuario._id,
-            nome: usuario.nome,
+            name: usuario.name,
             email: usuario.email
         }
         const token = jwt.sign(payload, process.env.CHAVE_JWT)
@@ -31,11 +31,11 @@ class ControlerUser{
         return token 
     }
 
-    async _gerarSenhaHash(senha){
+    async _generateHashPassword(password){
         const custo = 12
-        let senhaHash = ''
-        senhaHash = await bcrypt.hash(senha, custo)
-        return senhaHash
+        let passwordHash = ''
+        passwordHash = await bcrypt.hash(password, custo)
+        return passwordHash
     }
 
     addUser(){
@@ -45,11 +45,11 @@ class ControlerUser{
             if (errosVal.length != 0) {
                 resp.json({ erros: errosVal })
             } else {                        
-                req.body.senha = await this._gerarSenhaHash(req.body.senha)
+                req.body.password = await this._generateHashPassword(req.body.password)
                 daoUsers.addUser(req.body)
-                    .then((resultado) => {
-                        console.log('RESULTADO ================================')
-                        console.log(resultado)
+                    .then((result) => {
+                        console.log('result ================================')
+                        console.log(result)
                         resp.json({status:'sucesso', msg: 'Usuário cadastrado com sucesso'})
                     })
                     .catch((erro) => {
@@ -68,7 +68,8 @@ class ControlerUser{
             const token = this.criaTokenJWT(req.user)
             resp.setHeader('Authorization', token)
             console.log(req.user)
-            const resposta = {user: {id: req.user._id, email:req.user.email, nome:req.user.nome}, token: token}
+            const resposta = {user: {id: req.user._id, email:req.user.email, name:req.user.name}, token: token}
+            console.log('LOGIN ================================================')
             console.log(resposta)
             resp.json(resposta)
         }

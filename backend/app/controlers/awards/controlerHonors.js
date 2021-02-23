@@ -19,10 +19,10 @@ class ControlerHonors {
             } else {
                 const content = { ...req.body }
                 if (req.file !== undefined) {
-                    content['pathArquivo'] = req.file.path
+                    content['filePath'] = req.file.path
                 }
                 daoHonors.addHonor(req.user, content)
-                    .then(resultado => resp.json(resultado))
+                    .then(result => resp.json(result))
                     .catch(erro => resp.json(erro))
             }
         }
@@ -31,7 +31,7 @@ class ControlerHonors {
     getHonors() {
         return function (req, resp) {
             daoHonors.getHonors(req.user)
-                .then(resultado => resp.json(resultado))
+                .then(result => resp.json(result))
                 .catch(erro => resp.json(erro))
         }
     }
@@ -39,7 +39,7 @@ class ControlerHonors {
     removeHonor() {
         return function (req, resp) {
             daoHonors.removeHonor(req.user.email, req.params.id)
-                .then(resultado => resp.json(resultado))
+                .then(result => resp.json(result))
                 .catch(erro => resp.json(erro))
         }
     }
@@ -52,21 +52,21 @@ class ControlerHonors {
             } else {
                 const content = { ...req.body }
                 if (req.file !== undefined) {
-                    content['pathArquivo'] = req.file.path
+                    content['filePath'] = req.file.path
                 } else {
-                    delete content['comprovante']
+                    delete content['proof']
                 }
                 daoHonors.getHonor(req.user, req.body._id)
-                    .then(resultado => {
+                    .then(result => {
                         let oldPath = undefined
-                        if (resultado[0] !== undefined) {
-                            if ((resultado[0]['honors']['pathArquivo'] !== undefined)) {
-                                oldPath = resultado[0]['honors']['pathArquivo']
+                        if (result[0] !== undefined) {
+                            if ((result[0]['honors']['filePath'] !== undefined)) {
+                                oldPath = result[0]['honors']['filePath']
                             }
                         }
                         fs.unlink(`./${oldPath}`, err => { console.log('===========\n==========\n===========', err) })
                         daoHonors.updateHonor(content)
-                            .then(resultado => resp.json(resultado))
+                            .then(result => resp.json(result))
                             .catch(erro => resp.json(erro))
                     })
                     .catch(erro => resp.json({ erro }))

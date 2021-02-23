@@ -107,7 +107,7 @@ class DaoSupervisions {
 
         const newData = {}
         Object.keys(data).forEach((key) => {
-            if (!((key === 'comprovante') && ((data['comprovante'] === 'undefined') || (data['comprovante'] === '')))) {
+            if (!((key === 'proof') && ((data['proof'] === 'undefined') || (data['proof'] === '')))) {
                 newData[`supervisions.$.${key}`] = data[key]
             }
         })

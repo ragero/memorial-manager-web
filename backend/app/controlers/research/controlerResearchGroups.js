@@ -19,10 +19,10 @@ class ControlerResearchGroup {
             } else {
                 const content = { ...req.body }
                 if (req.file !== undefined) {
-                    content['pathArquivo'] = req.file.path
+                    content['filePath'] = req.file.path
                 }
                 daoResearchGroups.addResearchGroup(req.user, content)
-                    .then(resultado => resp.json(resultado))
+                    .then(result => resp.json(result))
                     .catch(erro => resp.json(erro))
             }
         }
@@ -31,7 +31,7 @@ class ControlerResearchGroup {
     getResearchGroups() {
         return function (req, resp) {
             daoResearchGroups.getResearchGroups(req.user)
-                .then(resultado => resp.json(resultado))
+                .then(result => resp.json(result))
                 .catch(erro => resp.json(erro))
         }
     }
@@ -39,7 +39,7 @@ class ControlerResearchGroup {
     removeResearchGroup() {
         return function (req, resp) {
             daoResearchGroups.removeResearchGroup(req.user.email, req.params.id)
-                .then(resultado => resp.json(resultado))
+                .then(result => resp.json(result))
                 .catch(erro => resp.json(erro))
         }
     }
@@ -52,21 +52,21 @@ class ControlerResearchGroup {
             } else {
                 const content = { ...req.body }
                 if (req.file !== undefined) {
-                    content['pathArquivo'] = req.file.path
+                    content['filePath'] = req.file.path
                 } else {
-                    delete content['comprovante']
+                    delete content['proof']
                 }
                 daoResearchGroups.getResearchGroup(req.user, req.body._id)
-                    .then(resultado => {
+                    .then(result => {
                         let oldPath = undefined
-                        if (resultado[0] !== undefined) {
-                            if ((resultado[0]['gruposPesquisa']['pathArquivo'] !== undefined)) {
-                                oldPath = resultado[0]['gruposPesquisa']['pathArquivo']
+                        if (result[0] !== undefined) {
+                            if ((result[0]['gruposPesquisa']['filePath'] !== undefined)) {
+                                oldPath = result[0]['gruposPesquisa']['filePath']
                             }
                         }
                         fs.unlink(`./${oldPath}`, err => { console.log('===========\n==========\n===========', err) })
                         daoResearchGroups.updateResearchGroup(content)
-                            .then(resultado => resp.json(resultado))
+                            .then(result => resp.json(result))
                             .catch(erro => resp.json(erro))
                     })
                     .catch(erro => resp.json({ erro }))

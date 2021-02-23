@@ -19,10 +19,10 @@ class ControlerResearchEvent {
             } else {
                 const content = { ...req.body }
                 if (req.file !== undefined) {
-                    content['pathArquivo'] = req.file.path
+                    content['filePath'] = req.file.path
                 }
                 daoResearchEvents.addResearchEvent(req.user, content)
-                    .then(resultado => resp.json(resultado))
+                    .then(result => resp.json(result))
                     .catch(erro => resp.json(erro))
             }
         }
@@ -31,7 +31,7 @@ class ControlerResearchEvent {
     getResearchEvents() {
         return function (req, resp) {
             daoResearchEvents.getResearchEvents(req.user)
-                .then(resultado => resp.json(resultado))
+                .then(result => resp.json(result))
                 .catch(erro => resp.json(erro))
         }
     }
@@ -39,7 +39,7 @@ class ControlerResearchEvent {
     removeResearchEvent() {
         return function (req, resp) {
             daoResearchEvents.removeResearchEvent(req.user.email, req.params.id)
-                .then(resultado => resp.json(resultado))
+                .then(result => resp.json(result))
                 .catch(erro => resp.json(erro))
         }
     }
@@ -52,21 +52,21 @@ class ControlerResearchEvent {
             } else {
                 const content = { ...req.body }
                 if (req.file !== undefined) {
-                    content['pathArquivo'] = req.file.path
+                    content['filePath'] = req.file.path
                 } else {
-                    delete content['comprovante']
+                    delete content['proof']
                 }
                 daoResearchEvents.getResearchEvent(req.user, req.body._id)
-                    .then(resultado => {
+                    .then(result => {
                         let oldPath = undefined
-                        if (resultado[0] !== undefined) {
-                            if ((resultado[0]['eventosPesquisa']['pathArquivo'] !== undefined)) {
-                                oldPath = resultado[0]['eventosPesquisa']['pathArquivo']
+                        if (result[0] !== undefined) {
+                            if ((result[0]['eventosPesquisa']['filePath'] !== undefined)) {
+                                oldPath = result[0]['eventosPesquisa']['filePath']
                             }
                         }
                         fs.unlink(`./${oldPath}`, err => { console.log('===========\n==========\n===========', err) })
                         daoResearchEvents.updateResearchEvent(content)
-                            .then(resultado => resp.json(resultado))
+                            .then(result => resp.json(result))
                             .catch(erro => resp.json(erro))
                     })
                     .catch(erro => resp.json({ erro }))

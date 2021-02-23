@@ -20,10 +20,10 @@ class ControlerDiscipline {
             } else {
                 const content = { ...req.body }
                 if (req.file !== undefined) {
-                    content['pathArquivo'] = req.file.path
+                    content['filePath'] = req.file.path
                 }
                 daoDisciplines.addDiscipline(req.user, content)
-                    .then(resultado => resp.json(resultado))
+                    .then(result => resp.json(result))
                     .catch(erro => resp.json(erro))
             }
         }
@@ -32,7 +32,7 @@ class ControlerDiscipline {
     getDisciplines() {
         return function (req, resp) {
             daoDisciplines.getDisciplines(req.user)
-                .then(resultado => resp.json(resultado))
+                .then(result => resp.json(result))
                 .catch(erro => resp.json(erro))
         }
     }
@@ -43,7 +43,7 @@ class ControlerDiscipline {
             console.log(req.body)
             console.log(req.params)
             daoDisciplines.removeDiscipline(req.user.email, req.params.id)
-                .then(resultado => resp.json(resultado))
+                .then(result => resp.json(result))
                 .catch(erro => resp.json(erro))
         }
     }
@@ -56,21 +56,21 @@ class ControlerDiscipline {
             } else {
                 const content = { ...req.body }
                 if (req.file !== undefined) {
-                    content['pathArquivo'] = req.file.path
+                    content['filePath'] = req.file.path
                 } else {
-                    delete content['comprovante']
+                    delete content['proof']
                 }
                 daoDisciplines.getDiscipline(req.user, req.body._id)
-                    .then(resultado => {
+                    .then(result => {
                         let oldPath = undefined
-                        if (resultado[0] !== undefined) {
-                            if ((resultado[0]['disciplines']['pathArquivo'] !== undefined)) {
-                                oldPath = resultado[0]['disciplines']['pathArquivo']
+                        if (result[0] !== undefined) {
+                            if ((result[0]['disciplines']['filePath'] !== undefined)) {
+                                oldPath = result[0]['disciplines']['filePath']
                             }
                         }
                         fs.unlink(`./${oldPath}`, err => { console.log('===========\n==========\n===========', err) })
                         daoDisciplines.updateDiscipline(content)
-                            .then(resultado => resp.json(resultado))
+                            .then(result => resp.json(result))
                             .catch(erro => resp.json(erro))
                     })
                     .catch(erro => resp.json({ erro }))

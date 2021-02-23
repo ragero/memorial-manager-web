@@ -26,8 +26,8 @@ module.exports = (app) => {
 
     app.route(controlerInternship.routes().base)
         .get(middlewareAutenticacao.bearear, controlerInternship.getInternships())
-        .post(middlewareAutenticacao.bearear, upload.single('comprovante'), internshipModel.validations(), controlerInternship.addInternship())
-        .put(middlewareAutenticacao.bearear, upload.single('comprovante'), internshipModel.validations(), controlerInternship.updateInternship())
+        .post(middlewareAutenticacao.bearear, upload.single('proof'), internshipModel.validations(), controlerInternship.addInternship())
+        .put(middlewareAutenticacao.bearear, upload.single('proof'), internshipModel.validations(), controlerInternship.updateInternship())
     
     app.route(controlerInternship.routes().baseID)
         .delete(middlewareAutenticacao.bearear, controlerInternship.removeInternship())

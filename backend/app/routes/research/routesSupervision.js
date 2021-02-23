@@ -26,8 +26,8 @@ module.exports = (app) => {
 
     app.route(controlerSupervision.routes().base)
         .get(middlewareAutenticacao.bearear, controlerSupervision.getSupervisions())
-        .post(middlewareAutenticacao.bearear, upload.single('comprovante'), supervisionModel.validations(), controlerSupervision.addSupervision())
-        .put(middlewareAutenticacao.bearear, upload.single('comprovante'), supervisionModel.validations(), controlerSupervision.updateSupervision())
+        .post(middlewareAutenticacao.bearear, upload.single('proof'), supervisionModel.validations(), controlerSupervision.addSupervision())
+        .put(middlewareAutenticacao.bearear, upload.single('proof'), supervisionModel.validations(), controlerSupervision.updateSupervision())
     
     app.route(controlerSupervision.routes().baseID)
         .delete(middlewareAutenticacao.bearear, controlerSupervision.removeSupervision())

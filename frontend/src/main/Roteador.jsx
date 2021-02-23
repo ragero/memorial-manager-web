@@ -3,6 +3,7 @@ import Home from '../pages/Home'
 import Pesquisa from '../pages/research/Pesquisa'
 import ProjetosExtensao from '../pages/ProjetosExtensao'
 import AtividadesAdministrativas from '../pages/AtividadesAdministrativas'
+import Formation from '../pages/formation'
 import Premios from '../pages/Premios'
 import Login from '../pages/Login'
 import CadastrarUsuario from '../pages/CadastrarUsuario'
@@ -11,6 +12,7 @@ export default function Roteador(){
     return(
         <Switch>
             <Route exact path='/' component={Home}/>
+            <Route exact path='/formation' component={Formation}/>
             <Route exact path='/pesquisa' component={Pesquisa}/>
             <Route exact path='/extensao' component={ProjetosExtensao}/>
             <Route exact path='/administracao' component={AtividadesAdministrativas}/>

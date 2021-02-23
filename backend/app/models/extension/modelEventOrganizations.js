@@ -8,7 +8,7 @@ class ExtensionProjectModel {
                 check('evento').trim().isLength({ min: 3, max: 200}).withMessage('O nome do evento deve ter entre 3 e 200 caracteres.').trim().escape(),
                 check('local').trim().isLength({ min: 3, max: 200}).withMessage('O local do evento deve ter entre 3 e 200 caracteres.').trim().escape(),
                 check('ano').trim().isInt().withMessage('O ano da publicação deve ser um valor inteiro.'),
-                check('comprovante')
+                check('proof')
                     .custom((value, { req }) => {
                         if(req.file !== undefined){
                             if (req.file.mimetype.startsWith('application/pdf')) {
@@ -21,7 +21,7 @@ class ExtensionProjectModel {
                             return true
                         }
                     })
-                    .withMessage('São aceitos apenas comprovantes em formato PDF.') 
+                    .withMessage('São aceitos apenas proofs em formato PDF.') 
             ]
         ]
     }

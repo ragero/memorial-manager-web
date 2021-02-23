@@ -9,7 +9,7 @@ class PublicationModel {
                 check('instituicao').trim().isLength({ min: 3, max: 200}).withMessage('A instituição deve ter entre 3 e 200 caracteres.').trim().escape(),
                 check('anoInicio').trim().isInt().withMessage('O ano de início deve ser um valor inteiro.'),
                 check('anoFim').trim().isInt().withMessage('O ano de fim da publicação deve ser um valor inteiro.'),
-                check('comprovante')
+                check('proof')
                     .custom((value, { req }) => {
                         if(req.file !== undefined){
                             if (req.file.mimetype.startsWith('application/pdf')) {
@@ -22,7 +22,7 @@ class PublicationModel {
                             return true
                         }
                     })
-                    .withMessage('São aceitos apenas comprovantes em formato PDF.') 
+                    .withMessage('São aceitos apenas proofs em formato PDF.') 
             ]
         ]
     }

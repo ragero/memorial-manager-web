@@ -26,8 +26,8 @@ module.exports = (app) => {
 
     app.route(controlerComissions.routes().base)
         .get(middlewareAutenticacao.bearear, controlerComissions.getComissions())
-        .post(middlewareAutenticacao.bearear, upload.single('comprovante'), modelReserachEvent.validations(), controlerComissions.addComission())
-        .put(middlewareAutenticacao.bearear, upload.single('comprovante'), modelReserachEvent.validations(), controlerComissions.updateComission())
+        .post(middlewareAutenticacao.bearear, upload.single('proof'), modelReserachEvent.validations(), controlerComissions.addComission())
+        .put(middlewareAutenticacao.bearear, upload.single('proof'), modelReserachEvent.validations(), controlerComissions.updateComission())
     
     app.route(controlerComissions.routes().baseID)
         .delete(middlewareAutenticacao.bearear, controlerComissions.removeComission())

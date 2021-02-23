@@ -168,7 +168,7 @@ export default function Pesquisa(props) {
                         <FormatListNumberedIcon className="mr-3" />Gerar Latex dos Itens
                     </Button>
                     <Button>
-                        <LibraryBooksIcon className="mr-3" />Gerar Caderno de comprovantes
+                        <LibraryBooksIcon className="mr-3" />Gerar Caderno de Comprovantes
                     </Button>
                 </div>
                 <Accordion>

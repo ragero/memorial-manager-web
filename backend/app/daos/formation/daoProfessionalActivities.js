@@ -1,28 +1,59 @@
 const { ObjectID } = require("mongodb")
 
+const baseField = 'formation.professionalActivities'
+
 class DaoProfessionalActivities {
 
     preprocessData(data) {
         data._id = new ObjectID()
-        data.ano = Number(data.ano)
+        data.yearBegin = Number(data.yearBegin)
+        if(data.yearEnd !== undefined || data.yearEnd !== ''){
+            data.yearEnd = Number(data.yearEnd)
+        }
 
         return data
     }
 
-    getProfessionalActivity(user, idProject) {
+    get(user, idData) {
+        console.log(user, idData)
         return new Promise((resolve, reject) => {
             collection.aggregate([
                 {
                     $match: { 'email': user.email }
                 },
                 {
-                    $project: { atividadesProfissionais: 1 }
+                    $project: { [baseField]: 1 }
                 },
                 {
-                    $unwind: "$atividadesProfissionais"
+                    $unwind: `$${baseField}`
                 },
                 {
-                    $match: { 'atividadesProfissionais._id': ObjectID(idProject) }
+                    $match: { [`${baseField}._id`]: ObjectID(idData) }
+                }
+            ]).toArray(function (err, result) {
+                if (err) {
+                    reject(err)
+                } else {
+                    resolve(result[0])
+                }
+            });
+        })
+    }
+
+    getAll(user) {
+        return new Promise((resolve, reject) => {
+            collection.aggregate([
+                {
+                    $match: { 'email': user.email }
+                },
+                {
+                    $project: { [baseField]: 1 }
+                },
+                {
+                    $unwind: `$${baseField}`
+                },
+                {
+                    $sort: { [`${baseField}.yearBegin`]: -1, [`${baseField}.role`]: 1}
                 }
             ]).toArray(function (err, result) {
                 if (err) {
@@ -35,33 +66,7 @@ class DaoProfessionalActivities {
         })
     }
 
-    getProfessionalActivity(user) {
-        return new Promise((resolve, reject) => {
-            collection.aggregate([
-                {
-                    $match: { 'email': user.email }
-                },
-                {
-                    $project: { atividadesProfissionais: 1 }
-                },
-                {
-                    $unwind: "$atividadesProfissionais"
-                },
-                {
-                    $sort: { "atividadesProfissionais.coordena": -1, "atividadesProfissionais.anoInicio": -1, "publicacoes.comFomento": -1, "publicacoes.comTitulo": -1 }
-                }
-            ]).toArray(function (err, result) {
-                if (err) {
-                    reject(err)
-                } else {
-                    console.log(result)
-                    resolve(result)
-                }
-            });
-        })
-    }
-
-    addProfessionalActivity(user, data) {
+    add(user, data) {
         data._id = new ObjectID()
         data = this.preprocessData(data)
 
@@ -69,7 +74,7 @@ class DaoProfessionalActivities {
             collection.updateOne({ email: user.email },
                 {
                     $push: {
-                        atividadesProfissionais: {
+                        [baseField]: {
                             _id: new ObjectID(),
                             ...data
                         }
@@ -84,10 +89,10 @@ class DaoProfessionalActivities {
 
     }
 
-    removeProfessionalActivity(id_user, idProfessionalActivitie) {
+    remove(idUser, idData) {
         return new Promise((resolve, reject) => {
-            collection.updateOne({ email: id_user },
-                { $pull: { projetosExtensao: { _id: ObjectID(idProfessionalActivitie) } } },
+            collection.updateOne({ email: idUser },
+                { $pull: { [baseField]: { _id: ObjectID(idData) } } },
                 function (err, document) {
                     if (err) {
                         reject(err)
@@ -99,24 +104,20 @@ class DaoProfessionalActivities {
 
     }
 
-
-    updateProfessionalActivity(data) {
-        const idProfessionalActivitie = data._id
+    update(data) {
+        console.log('=======Dentro do update Professional Activities======')
+        const idData = data._id
         delete data._id
         data = this.preprocessData(data)
 
         const newData = {}
         Object.keys(data).forEach((key) => {
-            if (!((key === 'comprovante') && ((data['comprovante'] === 'undefined') || (data['comprovante'] === '')))) {
-                newData[`projetosExtensao.$.${key}`] = data[key]
+            if (!((key === 'proof') && ((data['proof'] === 'undefined') || (data['proof'] === '') || (data['proof'] === undefined)))) {
+                newData[`${baseField}.$.${key}`] = data[key]
             }
         })
-        console.log('=======Dentro do updateReasearchProject======')
-        console.log('new data')
-        console.log(newData)
-        console.log('=============')
         return new Promise((resolve, reject) => {
-            collection.updateOne({ "projetosExtensao._id": ObjectID(idProfessionalActivitie) },
+            collection.updateOne({ [`${formation.professionalActivities}._id`]: ObjectID(idData) },
                 { $set: newData }, function (err, document) {
                     if (err) {
                         reject(err)

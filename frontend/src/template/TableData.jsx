@@ -1,45 +1,15 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import Paper from '@material-ui/core/Paper'
-import Table from '@material-ui/core/Table'
-import TableBody from '@material-ui/core/TableBody'
-import TableCell from '@material-ui/core/TableCell'
-import TableContainer from '@material-ui/core/TableContainer'
-import TableHead from '@material-ui/core/TableHead'
-import TablePagination from '@material-ui/core/TablePagination'
-import TableRow from '@material-ui/core/TableRow'
-import Button from '@material-ui/core/Button'
+import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, 
+        TableRow, Button, Tooltip} from '@material-ui/core'
 import EditIcon from '@material-ui/icons/Edit'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
 import PageviewIcon from '@material-ui/icons/Pageview'
-import Tooltip from '@material-ui/core/Tooltip'
+
 import { apiRequest, baseURLFiles } from '../services/request'
 
-
-// const columns = [
-//     { id: 'titulo', label: 'Título', minWidth: 250 },
-//     { id: 'tipo', label: 'Tipo', minWidth: 50 },
-//     {
-//         id: 'anoPublicacao',
-//         label: 'Ano',
-//         minWidth: 50,
-//         align: 'center',
-//     },
-//     {
-//         id: 'qualis',
-//         label: 'Qualis',
-//         minWidth: 50,
-//         align: 'center',
-//     },
-//     {
-//         id: 'acoes',
-//         label: 'Ações',
-//         minWidth: 50,
-//         align: 'center',
-//     }
-// ];
-
-
+const entriesPerPageDescription = 'Entradas por página'
+const rowsPerPageValues = [5,10,50,100]
 
 const useStyles = makeStyles({
     root: {
@@ -50,14 +20,14 @@ const useStyles = makeStyles({
     },
 });
 
-function remover(id, atualizaPublicacoes, route) {
+function remove(id, updateItems, route) {
     apiRequest.delete(`${route}/${id}`)
         .then(resposta => resposta.data)
         .then(resposta => {
             console.log(resposta.result)
             if (resposta.result.nModified === 1) {
                 alert("Publicacao deletada")
-                atualizaPublicacoes()
+                updateItems()
             } else {
                 alert("Não foi possível realizar a deleção")
             }
@@ -84,7 +54,7 @@ export default function TablePublications(props) {
 
     
     console.log(props.columns)
-    console.log(props.dados)
+    console.log(props.data)
     return (
         <React.Fragment>
             <Paper className={classes.root}>
@@ -104,7 +74,7 @@ export default function TablePublications(props) {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {props.dados.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                            {props.data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                                 return (
                                     <TableRow hover role="checkbox" tabIndex={-1} key={row._id}>
                                         {columns.map((column) => {
@@ -115,9 +85,9 @@ export default function TablePublications(props) {
                                                     <TableCell key={column.id} align={column.align}>
                                                         <Tooltip title="Editar" aria-label="editar">
                                                             <Button onClick={(e) => {
-                                                                props.atualizarTipoEnvio('Atualizar')
-                                                                props.atualizarItemCorrente(row)
-                                                                props.abrirTelaCadastro()
+                                                                props.updateSendType('Atualizar')
+                                                                props.updateCurrentItem(row)
+                                                                props.openRegistrationScreen()
                                                             }}><EditIcon/></Button>
                                                         </Tooltip>
                                                         <Tooltip title="Remover" aria-label="remover">
@@ -126,13 +96,13 @@ export default function TablePublications(props) {
                                                                     onClick={(e) => {
                                                                         const resp = window.confirm('Deseja realmente remover este item?')
                                                                         if (resp === true){
-                                                                            remover(row._id, props.atualizarDados, props.route)
+                                                                            remove(row._id, props.updateItems, props.route)
                                                                         }
                                                                     } }/>
                                                                 </Button>
                                                         </Tooltip>
                                                         <Tooltip title="Visualizar Comprovate" aria-label="visualizar">
-                                                            <Button color='primary' disabled={!row.pathArquivo} target="_blank" href={`${baseURLFiles}/${row.pathArquivo}`}><PageviewIcon /></Button>
+                                                            <Button color='primary' disabled={!row.filePath} target="_blank" href={`${baseURLFiles}/${row.filePath}`}><PageviewIcon /></Button>
                                                         </Tooltip>
                                                     </TableCell>
                                                 )
@@ -151,10 +121,10 @@ export default function TablePublications(props) {
                     </Table>
                 </TableContainer>
                 <TablePagination
-                    rowsPerPageOptions={[10, 25, 100]}
-                    labelRowsPerPage={"Entradas por página"}
+                    rowsPerPageOptions={rowsPerPageValues}
+                    labelRowsPerPage={entriesPerPageDescription}
                     component="div"
-                    count={props.dados.length}
+                    count={props.data.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     onChangePage={handleChangePage}

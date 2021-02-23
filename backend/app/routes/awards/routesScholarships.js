@@ -26,8 +26,8 @@ module.exports = (app) => {
 
     app.route(controlerScholarships.routes().base)
         .get(middlewareAutenticacao.bearear, controlerScholarships.getScholarships())
-        .post(middlewareAutenticacao.bearear, upload.single('comprovante'), modelReserachProject.validations(), controlerScholarships.addScholarship())
-        .put(middlewareAutenticacao.bearear, upload.single('comprovante'), modelReserachProject.validations(), controlerScholarships.updateScholarship())
+        .post(middlewareAutenticacao.bearear, upload.single('proof'), modelReserachProject.validations(), controlerScholarships.addScholarship())
+        .put(middlewareAutenticacao.bearear, upload.single('proof'), modelReserachProject.validations(), controlerScholarships.updateScholarship())
     
     app.route(controlerScholarships.routes().baseID)
         .delete(middlewareAutenticacao.bearear, controlerScholarships.removeScholarship())

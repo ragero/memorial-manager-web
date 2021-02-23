@@ -43,7 +43,7 @@ export default class AddPublication extends Component {
 
     atualizaArquivo(e) {
         if(e.target.files[0] !== undefined){
-            this.setState({ nomeArquivo: e.target.files[0].name, comprovante: e.target.files[0] })
+            this.setState({ fileName: e.target.files[0].name, proof: e.target.files[0] })
         }
     }
 
@@ -68,7 +68,7 @@ export default class AddPublication extends Component {
         formData.append('paginaInicial', this.state.paginaInicial)
         formData.append('paginaFinal', this.state.paginaFinal)
         formData.append('anoPublicacao', this.state.anoPublicacao)
-        formData.append('comprovante', this.state.comprovante)
+        formData.append('proof', this.state.proof)
 
         const methodRequest = this.props.tipoEnvio === 'Cadastrar' ? 'post' : 'put'
         alert(methodRequest)
@@ -226,23 +226,23 @@ export default class AddPublication extends Component {
                             />
                         </div>
                         <input
-                            id="comprovante-publicacao"
+                            id="proof-publicacao"
                             accept="application/pdf"
                             hidden
                             type="file"
                             onChange={this.atualizaArquivo}
                         />
                         <div className='mt-4 mb-5'>
-                            <label htmlFor="comprovante-publicacao">
+                            <label htmlFor="proof-publicacao">
                                 <Button
                                     variant="contained"
                                     component="span"
                                     startIcon={<CloudUploadIcon />}
                                 >
-                                    Adicionar Comprovante
+                                    Adicionar proof
                             </Button>
                             </label>
-                            <label className='ml-3'>{this.state.nomeArquivo}</label>
+                            <label className='ml-3'>{this.state.fileName}</label>
                         </div>
 
                         <Button

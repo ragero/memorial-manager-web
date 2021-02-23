@@ -8,14 +8,13 @@ import "./FormAddUser.css"
 
 export default function AddUser(props) {
 
-    const cadastrar = (e, nome, email, senha) => {
+    const cadastrar = (e, name, email, password) => {
         e.preventDefault()
-        console.log(nome, email, senha)
         apiRequest.post('/users',
             {
-                nome,
-                senha,
-                email
+                name,
+                email,
+                password
             }, 
             {
             headers: {
@@ -39,21 +38,21 @@ export default function AddUser(props) {
     }
 
 
-    const [nome, setNome] = useState('')
+    const [name, setName] = useState('')
     const [email, setEmail] = useState('')
-    const [senha, setSenha] = useState('')
-    const [confirmarSenha, setConfirmarSenha] = useState('')
+    const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
 
     return (
         <Container maxWidth="sm" className="form-cadastro mt-5 shadow">
             <form>
                 <TextField
-                    id="nome"
+                    id="name"
                     label="Nome completo"
                     fullWidth
                     margin='normal'
-                    value={nome}
-                    onChange={(event) => setNome(event.target.value)}
+                    value={name}
+                    onChange={(event) => setName(event.target.value)}
                 />
                 <TextField
                     id="email"
@@ -65,27 +64,27 @@ export default function AddUser(props) {
                     onChange={(event) => setEmail(event.target.value)}
                 />
                 <TextField
-                    id="senha"
+                    id="password"
                     label="Senha"
                     type="password"
                     fullWidth
                     margin='normal'
-                    value={senha}
-                    onChange={(event) => setSenha(event.target.value)}
+                    value={password}
+                    onChange={(event) => setPassword(event.target.value)}
                 />
                 <TextField
-                    id="confirmar-senha"
+                    id="confirm-password"
                     label="Confirmar senha"
                     type="password"
                     fullWidth
                     margin='normal'
-                    value={confirmarSenha}
-                    onChange={(event) => setConfirmarSenha(event.target.value)}
+                    value={confirmPassword}
+                    onChange={(event) => setConfirmPassword(event.target.value)}
                 />
                 <Button
                     variant="contained"
                     color="primary"
-                    onClick={(e) => cadastrar(e, nome, email, senha)}
+                    onClick={(e) => cadastrar(e, name, email, password)}
                     startIcon={<PersonAddIcon/>}
                     className="mb-4 mt-3"
                 >

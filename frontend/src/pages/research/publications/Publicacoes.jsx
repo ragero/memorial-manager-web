@@ -14,12 +14,12 @@ const initialStatePublication = {
   tipo: "Periódico",
   local: "",
   autores: [""],
-  nomeArquivo: "",
+  fileName: "",
   qualis: "A1",
   paginaInicial: "",
   paginaFinal: "",
   anoPublicacao: "",
-  comprovante: "",
+  proof: "",
 };
 
 const initialState = {
@@ -75,8 +75,8 @@ export default class Publicacoes extends Component {
 
   atualizarPublicacaoCorrente(currentPublication) {
     console.log("Atualizando publicaçãoCorrente!!!!");
-    currentPublication["nomeArquivo"] = path.basename(
-      currentPublication.pathArquivo
+    currentPublication["fileName"] = path.basename(
+      currentPublication.filePath
     );
     this.setState({ currentPublication });
   }

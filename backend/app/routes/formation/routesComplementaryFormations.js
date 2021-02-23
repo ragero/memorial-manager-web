@@ -26,8 +26,8 @@ module.exports = (app) => {
 
     app.route(controlerComplementaryFormations.routes().base)
         .get(middlewareAutenticacao.bearear, controlerComplementaryFormations.getComplementaryFormations())
-        .post(middlewareAutenticacao.bearear, upload.single('comprovante'), modelComplementaryFormations.validations(), controlerComplementaryFormations.addComplementaryFormation())
-        .put(middlewareAutenticacao.bearear, upload.single('comprovante'), modelComplementaryFormations.validations(), controlerComplementaryFormations.updateComplementaryFormation())
+        .post(middlewareAutenticacao.bearear, upload.single('proof'), modelComplementaryFormations.validations(), controlerComplementaryFormations.addComplementaryFormation())
+        .put(middlewareAutenticacao.bearear, upload.single('proof'), modelComplementaryFormations.validations(), controlerComplementaryFormations.updateComplementaryFormation())
     
     app.route(controlerComplementaryFormations.routes().baseID)
         .delete(middlewareAutenticacao.bearear, controlerComplementaryFormations.removeComplementaryFormation())

@@ -12,7 +12,7 @@ export default function Menu(){
         <aside className="menu">
             <nav>
                 <a href='/'><HomeIcon className="mr-1"/>Home</a>
-                <a href='/formacao'><LayersIcon  className="mr-1"/>Formação</a>
+                <a href='/formation'><LayersIcon  className="mr-1"/>Formação</a>
                 <a href='/pesquisa'><SearchIcon  className="mr-1"/>Pesquisa</a>
                 <a href='/extensao'><NaturePeopleIcon className="mr-1"/>Extensão</a>
                 <a href='/extensao'><MenuBookIcon className="mr-1"/>Ensino</a>

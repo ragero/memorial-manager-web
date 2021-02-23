@@ -30,7 +30,7 @@ export default class AddPublication extends Component {
      atualizarCoordenacao(e) {
           let nomeCoordenador = ""
           if (e.target.value === true) {
-               nomeCoordenador = Autenticacao.getNome()
+               nomeCoordenador = Autenticacao.getName()
           }
           this.setState({ [e.target.name]: e.target.value, nomeCoordenador })
      }
@@ -52,8 +52,8 @@ export default class AddPublication extends Component {
      atualizaArquivo(e) {
           if (e.target.files[0] !== undefined) {
                this.setState({
-                    nomeArquivo: e.target.files[0].name,
-                    comprovante: e.target.files[0],
+                    fileName: e.target.files[0].name,
+                    proof: e.target.files[0],
                })
           }
      }
@@ -67,21 +67,21 @@ export default class AddPublication extends Component {
      enviarProjetoPesquisa(e) {
           console.log("=======ENVIAR PROJETO PESQUISA========")
           console.log(this.state)
-          console.log(this.state.anoFim)
+          console.log(this.state.yearEnd)
           e.preventDefault()
           let formData = new FormData()
           formData.append("_id", this.state._id)
           formData.append("titulo", this.state.titulo)
           formData.append("descricao", this.state.descricao)
           formData.append("edital", this.state.edital)
-          formData.append("anoInicio", this.state.anoInicio)
-          formData.append("anoFim", this.state.anoFim)
-          formData.append("instituicao", this.state.instituicao)
+          formData.append("yearBegin", this.state.yearBegin)
+          formData.append("yearEnd", this.state.yearEnd)
+          formData.append("institution", this.state.institution)
           formData.append("fomento", this.state.fomento)
           formData.append("coordena", this.state.coordena)
           formData.append("agenciaFomento", this.state.agenciaFomento)
           formData.append("nomeCoordenador", this.state.nomeCoordenador)
-          formData.append("comprovante", this.state.comprovante)
+          formData.append("proof", this.state.proof)
 
           const methodRequest = this.props.tipoEnvio === "Cadastrar" ? "post" : "put"
           const acao = this.props.tipoEnvio === "Cadastrar" ? "cadastrado" : "atualizado"
@@ -155,29 +155,29 @@ export default class AddPublication extends Component {
                                    onChange={this.atualizarCampo}
                               />
                               <TextField
-                                   name="instituicao"
+                                   name="institution"
                                    label="Instituição de Execução"
                                    fullWidth
                                    margin="normal"
-                                   value={this.state.instituicao}
+                                   value={this.state.institution}
                                    onChange={this.atualizarCampo}
                               />
                               <div>
                                    <TextField
-                                        name="anoInicio"
+                                        name="yearBegin"
                                         label="Ano Inicial"
                                         margin="normal"
                                         type="number"
-                                        value={this.state.anoInicio}
+                                        value={this.state.yearBegin}
                                         onChange={this.atualizarCampo}
                                    />
                                    <TextField
                                         className="ml-3"
-                                        name="anoFim"
+                                        name="yearEnd"
                                         label="Ano Final"
                                         margin="normal"
                                         type="number"
-                                        value={this.state.anoFim}
+                                        value={this.state.yearEnd}
                                         onChange={this.atualizarCampo}
                                    />
                               </div>
@@ -217,19 +217,19 @@ export default class AddPublication extends Component {
                               />
 
                               <input
-                                   id="comprovante-projeto-pesquisa"
+                                   id="proof-projeto-pesquisa"
                                    accept="application/pdf"
                                    hidden
                                    type="file"
                                    onChange={this.atualizaArquivo}
                               />
                               <div className="mt-4 mb-5">
-                                   <label htmlFor="comprovante-projeto-pesquisa">
+                                   <label htmlFor="proof-projeto-pesquisa">
                                         <Button variant="contained" component="span" startIcon={<CloudUploadIcon />}>
-                                             Adicionar Comprovante
+                                             Adicionar proof
                                         </Button>
                                    </label>
-                                   <label className="ml-3">{this.state.nomeArquivo}</label>
+                                   <label className="ml-3">{this.state.fileName}</label>
                               </div>
 
                               <Button

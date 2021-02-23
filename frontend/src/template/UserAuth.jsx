@@ -26,7 +26,7 @@ class AutenticacaoUsuario extends Component {
 
     componentDidMount() {
         if (Autenticacao.isAuthenticade()) {
-            this.setState({ nome: Autenticacao.getNome(), email: Autenticacao.getEmail() })
+            this.setState({ nome: Autenticacao.getName(), email: Autenticacao.getEmail() })
         }
     }
 
@@ -34,7 +34,7 @@ class AutenticacaoUsuario extends Component {
         let component = undefined
         if (this.state.nome !== '') {
             component = (<div>
-                <span className="mr-2">{Autenticacao.getNome()}</span>
+                <span className="mr-2">{Autenticacao.getName()}</span>
                 |
                 <Link
                     component="button"

@@ -26,8 +26,8 @@ module.exports = (app) => {
 
     app.route(controlerProfessionalActivities.routes().base)
         .get(middlewareAutenticacao.bearear, controlerProfessionalActivities.getProfessionalActivities())
-        .post(middlewareAutenticacao.bearear, upload.single('comprovante'), modelProfessionalActivities.validations(), controlerProfessionalActivities.addProfessionalActivity())
-        .put(middlewareAutenticacao.bearear, upload.single('comprovante'), modelProfessionalActivities.validations(), controlerProfessionalActivities.updateProfessionalActivity())
+        .post(middlewareAutenticacao.bearear, upload.single('proof'), modelProfessionalActivities.validations(), controlerProfessionalActivities.addProfessionalActivity())
+        .put(middlewareAutenticacao.bearear, upload.single('proof'), modelProfessionalActivities.validations(), controlerProfessionalActivities.updateProfessionalActivity())
     
     app.route(controlerProfessionalActivities.routes().baseID)
         .delete(middlewareAutenticacao.bearear, controlerProfessionalActivities.removeProfessionalActivity())

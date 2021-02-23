@@ -13,15 +13,15 @@ const initialStateResearchProject = {
      titulo: "",
      descricao: "",
      edital: "",
-     anoInicio: "",
-     anoFim: "",
-     instituicao: "",
+     yearBegin: "",
+     yearEnd: "",
+     institution: "",
      fomento: false,
      agenciaFomento: "",
      coordena: false,
      nomeCoordenador: "",
-     nomeArquivo: "",
-     comprovante: "",
+     fileName: "",
+     proof: "",
 }
 
 const initialState = {
@@ -82,7 +82,7 @@ export default class Publicacoes extends Component {
      }
 
      atualizarProjetoPesquisaCorrente(currentProject) {
-          currentProject["nomeArquivo"] = path.basename(currentProject.pathArquivo)
+          currentProject["fileName"] = path.basename(currentProject.filePath)
           this.setState({ currentResearchProject: currentProject })
      }
 
@@ -123,13 +123,13 @@ export default class Publicacoes extends Component {
                                         minWidth: 250,
                                    },
                                    {
-                                        id: "anoInicio",
+                                        id: "yearBegin",
                                         label: "Início",
                                         minWidth: 50,
                                         align: "center",
                                    },
                                    {
-                                        id: "anoFim",
+                                        id: "yearEnd",
                                         label: "Fim",
                                         minWidth: 50,
                                         align: "center",

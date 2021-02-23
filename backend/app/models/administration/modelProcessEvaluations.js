@@ -8,7 +8,7 @@ class ProcessEvaluationModel {
                 check('descricao').trim().isLength({ min: 3, max: 200}).withMessage('A descricao deve ter entre 3 e 200 caracteres.').trim().escape(),
                 check('instituicao').trim().isLength({ min: 3, max: 200}).withMessage('A instituição deve ter entre 3 e 200 caracteres.').trim().escape(),
                 check('ano').trim().isInt().withMessage('O ano da avaliação deve ser um valor inteiro.'),
-                check('comprovante')
+                check('proof')
                     .custom((value, { req }) => {
                         if(req.file !== undefined){
                             if (req.file.mimetype.startsWith('application/pdf')) {
@@ -21,7 +21,7 @@ class ProcessEvaluationModel {
                             return true
                         }
                     })
-                    .withMessage('São aceitos apenas comprovantes em formato PDF.') 
+                    .withMessage('São aceitos apenas proofs em formato PDF.') 
             ]
         ]
     }

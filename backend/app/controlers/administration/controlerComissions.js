@@ -19,10 +19,10 @@ class ControlerComission {
             } else {
                 const content = { ...req.body }
                 if (req.file !== undefined) {
-                    content['pathArquivo'] = req.file.path
+                    content['filePath'] = req.file.path
                 }
                 daoComissions.addComission(req.user, content)
-                    .then(resultado => resp.json(resultado))
+                    .then(result => resp.json(result))
                     .catch(erro => resp.json(erro))
             }
         }
@@ -31,7 +31,7 @@ class ControlerComission {
     getComissions() {
         return function (req, resp) {
             daoComissions.getComissions(req.user)
-                .then(resultado => resp.json(resultado))
+                .then(result => resp.json(result))
                 .catch(erro => resp.json(erro))
         }
     }
@@ -39,7 +39,7 @@ class ControlerComission {
     removeComission() {
         return function (req, resp) {
             daoComissions.removeComission(req.user.email, req.params.id)
-                .then(resultado => resp.json(resultado))
+                .then(result => resp.json(result))
                 .catch(erro => resp.json(erro))
         }
     }
@@ -52,21 +52,21 @@ class ControlerComission {
             } else {
                 const content = { ...req.body }
                 if (req.file !== undefined) {
-                    content['pathArquivo'] = req.file.path
+                    content['filePath'] = req.file.path
                 } else {
-                    delete content['comprovante']
+                    delete content['proof']
                 }
                 daoComissions.getComission(req.user, req.body._id)
-                    .then(resultado => {
+                    .then(result => {
                         let oldPath = undefined
-                        if (resultado[0] !== undefined) {
-                            if ((resultado[0]['comissoes']['pathArquivo'] !== undefined)) {
-                                oldPath = resultado[0]['comissoes']['pathArquivo']
+                        if (result[0] !== undefined) {
+                            if ((result[0]['comissoes']['filePath'] !== undefined)) {
+                                oldPath = result[0]['comissoes']['filePath']
                             }
                         }
                         fs.unlink(`./${oldPath}`, err => { console.log('===========\n==========\n===========', err) })
                         daoComissions.updateComission(content)
-                            .then(resultado => resp.json(resultado))
+                            .then(result => resp.json(result))
                             .catch(erro => resp.json(erro))
                     })
                     .catch(erro => resp.json({ erro }))

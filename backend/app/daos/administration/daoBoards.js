@@ -7,7 +7,7 @@ class DaoBoards {
         return data
     }
 
-    getComission(user, idComission){
+    getBoard(user, idBoard){
         return new Promise((resolve, reject) => {
             collection.aggregate([
                 {
@@ -20,7 +20,7 @@ class DaoBoards {
                     $unwind: "$bancasConcurso"
                 },
                 {
-                    $match: {'bancasConcurso._id': ObjectID(idComission)}
+                    $match: {'bancasConcurso._id': ObjectID(idBoard)}
                 }
             ]).toArray(function (err, result) {
                 if(err){
@@ -59,7 +59,7 @@ class DaoBoards {
         })
     }
 
-    addComission(user, data) {
+    addBoard(user, data) {
         data._id = new ObjectID()
         data.autores = this.processAuthors(data.autores)
         data = this.preprocessData(data)
@@ -83,10 +83,10 @@ class DaoBoards {
 
     }
 
-    removeComission(id_user, idComission) {
+    removeBoard(id_user, idBoard) {
         return new Promise((resolve, reject) => {
             collection.updateOne({ email: id_user },
-                { $pull: { bancasConcurso: { _id: ObjectID(idComission) } } },
+                { $pull: { bancasConcurso: { _id: ObjectID(idBoard) } } },
                 function (err, document) {
                     if (err) {
                         reject(err)
@@ -99,21 +99,21 @@ class DaoBoards {
     }
 
 
-    updateComission(data) {
-        const idComission = data._id
+    updateBoard(data) {
+        const idBoard = data._id
         delete data._id
         data.autores = this.processAuthors(data.autores)
         data = this.preprocessData(data)
 
         const newData = {}
         Object.keys(data).forEach((key) => {
-            if (!((key === 'comprovante') && ((data['comprovante'] === 'undefined') || (data['comprovante'] === '')))) {
+            if (!((key === 'proof') && ((data['proof'] === 'undefined') || (data['proof'] === '')))) {
                 newData[`bancasConcurso.$.${key}`] = data[key]
             }
         })
         console.log(newData)
         return new Promise((resolve, reject) => {
-            collection.updateOne({ "bancasConcurso._id": ObjectID(idComission) },
+            collection.updateOne({ "bancasConcurso._id": ObjectID(idBoard) },
                 { $set: newData }, function (err, document) {
                     if (err) {
                         reject(err)

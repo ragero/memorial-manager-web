@@ -19,10 +19,10 @@ class ControlerSupervision {
             } else {
                 const content = { ...req.body }
                 if (req.file !== undefined) {
-                    content['pathArquivo'] = req.file.path
+                    content['filePath'] = req.file.path
                 }
                 daoSupervisions.addSupervision(req.user, content)
-                    .then(resultado => resp.json(resultado))
+                    .then(result => resp.json(result))
                     .catch(erro => resp.json(erro))
             }
         }
@@ -31,7 +31,7 @@ class ControlerSupervision {
     getSupervisions() {
         return function (req, resp) {
             daoSupervisions.getSupervisions(req.user)
-                .then(resultado => resp.json(resultado))
+                .then(result => resp.json(result))
                 .catch(erro => resp.json(erro))
         }
     }
@@ -42,7 +42,7 @@ class ControlerSupervision {
             console.log(req.body)
             console.log(req.params)
             daoSupervisions.removeSupervision(req.user.email, req.params.id)
-                .then(resultado => resp.json(resultado))
+                .then(result => resp.json(result))
                 .catch(erro => resp.json(erro))
         }
     }
@@ -55,21 +55,21 @@ class ControlerSupervision {
             } else {
                 const content = { ...req.body }
                 if (req.file !== undefined) {
-                    content['pathArquivo'] = req.file.path
+                    content['filePath'] = req.file.path
                 } else {
-                    delete content['comprovante']
+                    delete content['proof']
                 }
                 daoSupervisions.getSupervision(req.user, req.body._id)
-                    .then(resultado => {
+                    .then(result => {
                         let oldPath = undefined
-                        if (resultado[0] !== undefined) {
-                            if ((resultado[0]['publicacoes']['pathArquivo'] !== undefined)) {
-                                oldPath = resultado[0]['publicacoes']['pathArquivo']
+                        if (result[0] !== undefined) {
+                            if ((result[0]['publicacoes']['filePath'] !== undefined)) {
+                                oldPath = result[0]['publicacoes']['filePath']
                             }
                         }
                         fs.unlink(`./${oldPath}`, err => { console.log('===========\n==========\n===========', err) })
                         daoSupervisions.updateSupervision(content)
-                            .then(resultado => resp.json(resultado))
+                            .then(result => resp.json(result))
                             .catch(erro => resp.json(erro))
                     })
                     .catch(erro => resp.json({ erro }))

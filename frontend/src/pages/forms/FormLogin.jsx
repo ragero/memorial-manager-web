@@ -5,11 +5,11 @@ import Autenticacao from '../../services/authentication'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import './FormLogin.css'
 
-function logar(e,  email, senha) {
+function logar(e,  email, password) {
     e.preventDefault()
     apiRequest.post('/users/login',
         {
-            senha,
+            password,
             email
         }, 
         {
@@ -17,20 +17,20 @@ function logar(e,  email, senha) {
             'Content-Type': 'application/json'
         }
     })
-    .then((resposta) => resposta.data)
-    .then((resposta) => {
+    .then((response) => response.data)
+    .then((response) => {
         
-        console.log(resposta)
-        if(resposta.erro === undefined){
-            const dados = {nome: resposta.user.nome, id: resposta.user.id, email: resposta.user.email, token: resposta.token}
-            Autenticacao.login(dados)
+        console.log(response)
+        if(response.erro === undefined){
+            const data = {name: response.user.name, id: response.user.id, email: response.user.email, token: response.token}
+            Autenticacao.login(data)
             window.location.href = '/'
         }else{ 
-            console.log(resposta)
+            console.log(response)
             alert('Usuário ou senha inválidos')
 
         }
-        console.log(resposta)
+        console.log(response)
     })
     .catch((erro) => console.log(erro))
 
@@ -39,7 +39,7 @@ function logar(e,  email, senha) {
 export default function AddUser() {
 
     const [email, setEmail] = useState('')
-    const [senha, setSenha] = useState('')
+    const [password, setPassword] = useState('')
 
     return (
         <Container maxWidth="sm" className="form-login mt-5 shadow">
@@ -54,18 +54,18 @@ export default function AddUser() {
                     onChange={(event) => setEmail(event.target.value)}
                 />
                 <TextField
-                    id="senha"
+                    id="password"
                     label="Senha"
                     type="password"
                     fullWidth
                     margin='normal'
-                    value={senha}
-                    onChange={(event) => setSenha(event.target.value)}
+                    value={password}
+                    onChange={(event) => setPassword(event.target.value)}
                 />
                 <Button
                     variant="contained"
                     color="primary"
-                    onClick={(e) => logar(e, email, senha)}
+                    onClick={(e) => logar(e, email, password)}
                     startIcon={<AccountCircleIcon/>}
                     className="mb-4 mt-3"
                 >

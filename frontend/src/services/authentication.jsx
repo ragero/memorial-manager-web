@@ -4,23 +4,23 @@ class Autenticacao{
 
     static keys = {
         id: 'id',
-        nome : 'nome',
+        name : 'name',
         email : 'email',
         token : 'token'
     }
 
-    static login(dados){
-        localStorage.setItem(Autenticacao.keys.id, dados.id)
-        localStorage.setItem(Autenticacao.keys.token, dados.token)
-        localStorage.setItem(Autenticacao.keys.email, dados.email)
-        localStorage.setItem(Autenticacao.keys.nome, dados.nome)
+    static login(data){
+        localStorage.setItem(Autenticacao.keys.id, data.id)
+        localStorage.setItem(Autenticacao.keys.token, data.token)
+        localStorage.setItem(Autenticacao.keys.email, data.email)
+        localStorage.setItem(Autenticacao.keys.name, data.name)
     }
 
     static logout(){
         localStorage.removeItem(Autenticacao.keys.id)
         localStorage.removeItem(Autenticacao.keys.token)
         localStorage.removeItem(Autenticacao.keys.email)
-        localStorage.removeItem(Autenticacao.keys.nome)
+        localStorage.removeItem(Autenticacao.keys.name)
     }
 
     static isAuthenticade(){
@@ -29,10 +29,10 @@ class Autenticacao{
 
     static getInfo(){
         return {
-            id: localStorage.getItem(Autenticacao.keys.token.id),
-            nome: localStorage.getItem(Autenticacao.keys.token),
+            id: localStorage.getItem(Autenticacao.keys.id),
+            name: localStorage.getItem(Autenticacao.keys.name),
             email: localStorage.getItem(Autenticacao.keys.email),
-            token: localStorage.getItem(Autenticacao.keys.nome)
+            token: localStorage.getItem(Autenticacao.keys.token)
         }
     }
 
@@ -44,8 +44,8 @@ class Autenticacao{
         return localStorage.getItem(Autenticacao.keys.email)
     }
 
-    static getNome(){
-        return localStorage.getItem(Autenticacao.keys.nome)
+    static getName(){
+        return localStorage.getItem(Autenticacao.keys.name)
     }
 
 }

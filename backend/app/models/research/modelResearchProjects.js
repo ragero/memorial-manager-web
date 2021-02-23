@@ -10,7 +10,7 @@ class ResearchProjectModel {
                 check('anoInicio').trim().isInt().withMessage('O ano da publicação deve ser um valor inteiro.'),
                 check('anoFim').trim().isInt().withMessage('O ano da publicação deve ser um valor inteiro.'),
                 check('instituicao').trim().isLength({ min: 3}).withMessage('O nome da instituição de execução deve ter no mínimo 3 caracteres.').trim().escape(),
-                check('comprovante')
+                check('proof')
                     .custom((value, { req }) => {
                         if(req.file !== undefined){
                             if (req.file.mimetype.startsWith('application/pdf')) {
@@ -23,7 +23,7 @@ class ResearchProjectModel {
                             return true
                         }
                     })
-                    .withMessage('São aceitos apenas comprovantes em formato PDF.') 
+                    .withMessage('São aceitos apenas proofs em formato PDF.') 
             ]
         ]
     }

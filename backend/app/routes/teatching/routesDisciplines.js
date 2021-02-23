@@ -26,8 +26,8 @@ module.exports = (app) => {
 
     app.route(controlerDiscipline.routes().base)
         .get(middlewareAutenticacao.bearear, controlerDiscipline.getDisciplines())
-        .post(middlewareAutenticacao.bearear, upload.single('comprovante'), disciplineModel.validations(), controlerDiscipline.addDiscipline())
-        .put(middlewareAutenticacao.bearear, upload.single('comprovante'), disciplineModel.validations(), controlerDiscipline.updateDiscipline())
+        .post(middlewareAutenticacao.bearear, upload.single('proof'), disciplineModel.validations(), controlerDiscipline.addDiscipline())
+        .put(middlewareAutenticacao.bearear, upload.single('proof'), disciplineModel.validations(), controlerDiscipline.updateDiscipline())
     
     app.route(controlerDiscipline.routes().baseID)
         .delete(middlewareAutenticacao.bearear, controlerDiscipline.removeDiscipline())
