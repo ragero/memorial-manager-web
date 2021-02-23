@@ -110,7 +110,7 @@ export default class FormProfessionalActivity extends Component {
                               <TextField name="_id" type="hidden" margin="normal" value={this.state._id} />
                               <TextField
                                    name="role"
-                                   label="Descrição do role"
+                                   label="Descrição do cargo"
                                    fullWidth
                                    margin="normal"
                                    value={this.state.role}
