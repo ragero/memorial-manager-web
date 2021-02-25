@@ -9,7 +9,6 @@ class DaoProfessionalActivities {
         this.dao = new BaseDao(baseField,sortFields)
     }
 
-
     preprocessData(data) {
         data.yearBegin = Number(data.yearBegin)
         if(data.yearEnd !== undefined || data.yearEnd !== ''){
@@ -28,9 +27,7 @@ class DaoProfessionalActivities {
     }
 
     add(user, data) {
-        
         data = this.preprocessData(data)
-
         return this.dao.add(user,data)
     }
 
@@ -39,6 +36,7 @@ class DaoProfessionalActivities {
     }
 
     update(data) {
+        data = this.preprocessData(data)
         return this.dao.update(data)
     }
 }

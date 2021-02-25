@@ -1,14 +1,12 @@
 import { Component } from "react"
 import path from "path"
 
-import { Box, Button } from "@material-ui/core"
-import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline"
+import { Box } from "@material-ui/core"
 
-import FormProfessionalActivity from "./FormProfessionalActivity"
+import ProfessionalActivitiesForm from "./ProfessionalActivitiesForm"
 import { apiRequest } from "../../../services/request"
 import TableData from "../../../template/TableData"
-
-// import "./Publicacoes.css";
+import {AddNewItemButton} from '../../../template/buttons'
 
 const route = "/formation/professional_activities"
 
@@ -38,11 +36,12 @@ export default class ProfessionalActivities extends Component {
           this.openRegistrationScreen = this.openRegistrationScreen.bind(this)
           this.updateCurrentItem = this.updateCurrentItem.bind(this)
           this.updateSendType = this.updateSendType.bind(this)
+          this.resetState = this.resetState.bind(this)
      }
 
      updateItems() {
           apiRequest
-               .get("/formation/professional_activities")
+               .get(route)
                .then((response) => {
                     return response.data
                })
@@ -53,6 +52,14 @@ export default class ProfessionalActivities extends Component {
                .catch((erro) => {
                     console.log(erro)
                })
+     }
+
+     resetState() {
+          this.setState({
+               currentItem: {
+                    ...initialStateItem,
+               },
+          })
      }
 
      updateSendType(sendType) {
@@ -80,20 +87,13 @@ export default class ProfessionalActivities extends Component {
           return (
                <div className="item-memorial">
                     <div className="item-memorial-buttons">
-                         <Button
-                              variant="contained"
-                              onClick={(e) => {
-                                   this.setState({
-                                        sendType: "Cadastrar",
-                                        displayForm: "block",
-                                        currentItem: {
-                                             ...initialStateItem,
-                                        },
-                                   })
-                              }}
+                         <AddNewItemButton
+                              resetState = {this.resetState}
+                              updateSendType = {this.updateSendType}
+                              openRegistrationScreen = {this.openRegistrationScreen}
                          >
-                              <AddCircleOutlineIcon className="mr-3" /> Adicionar Nova Experiência Profissional
-                         </Button>
+                              Adicionar Nova Experiência Profissional
+                         </AddNewItemButton>
                     </div>
                     <hr />
                     {this.state.items.length === 0 ? (
@@ -115,7 +115,7 @@ export default class ProfessionalActivities extends Component {
                          ></TableData>
                     )}
                     <Box display={this.state.displayForm}>
-                         <FormProfessionalActivity
+                         <ProfessionalActivitiesForm
                               sendType={this.state.sendType}
                               itemType="Atividade Profissional"
                               data={this.state.currentItem}

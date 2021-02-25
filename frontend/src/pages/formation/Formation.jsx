@@ -1,26 +1,33 @@
-import {useState, createRef, Fragment} from 'react'
+import {useState, Fragment} from 'react'
 
-import {Accordion, AccordionSummary, AccordionDetails, Box, Button, Typography} from '@material-ui/core'
+import {Accordion, AccordionSummary, AccordionDetails, Box, Typography} from '@material-ui/core'
 
 import LayersIcon from '@material-ui/icons/Layers'
-import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered'
-import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
-import FileCopyIcon from '@material-ui/icons/FileCopy';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
 import Content from '../../template/Content'
 import RestrictedArea from '../../template/RestrictedArea'
 import Autenticacao from '../../services/authentication'
 import StdDialog from '../../template/StdDialog'
+import {GenerateLatexButton, ProofsBookButton} from '../../template/buttons'
 
 import FormProfessionalActivity from './prefessional-activities/ProfessionalActivities'
 import './Formation.css'
 
 
+
 export default function Formation(props) {
 
     const [displayDialog,setDisplayDialog] = useState('none')
-    const refTexto = createRef()
+    
+
+    const closeScreen = () => {
+        setDisplayDialog('none')
+    }
+
+    const openScreen = () => {
+        setDisplayDialog('block')
+    }
 
     let content = undefined 
     if (!Autenticacao.isAuthenticade()) {
@@ -29,32 +36,13 @@ export default function Formation(props) {
         content = (
             <Fragment>
                 <Box display={displayDialog}>
-                    <StdDialog titulo="Código Latex dos itens de pesquisa" setDisplayDialog={setDisplayDialog}>
-                        <textarea ref={refTexto} rows="25" className="itens-latex form-control">
-                            Teste
-                        </textarea>
-                        <Button 
-                            variant="contained" 
-                            color="primary" 
-                            className="mb-3"
-                            onClick={
-                                (e) => {
-                                    refTexto.current.select()
-                                    document.execCommand('copy')
-                                }
-                            }
-                        >
-                            <FileCopyIcon className="mr-2"/>Copiar para a área de trabalho
-                        </Button>
+                    <StdDialog titulo="Código Latex dos itens de pesquisa" closeScreen={closeScreen}>
+                        teste
                     </StdDialog>
                 </Box>
                 <div className="pesquisa-botoes">
-                    <Button onClick={(e) => setDisplayDialog('block')}>
-                        <FormatListNumberedIcon className="mr-3" />Gerar Latex dos Itens
-                    </Button>
-                    <Button>
-                        <LibraryBooksIcon className="mr-3" />Gerar Caderno de Comprovantes
-                    </Button>
+                    <GenerateLatexButton openScreen={openScreen}/>
+                    <ProofsBookButton />
                 </div>
                 <Accordion>
                     <AccordionSummary
