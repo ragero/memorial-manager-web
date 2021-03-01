@@ -11,7 +11,7 @@ function StdDialog(props) {
           <div className="screen-dialog">
                <Container maxWidth="sm" className="screen-dialog-container">
                     <div className="screen-dialog-container-title-bar pt-2">
-                         <Typography variant="h5" component="h3" className="ml-2">
+                         <Typography variant="h5" component="h3" className="ml-1">
                               {props.titulo}{" "}
                          </Typography>
                          <CloseButton closeScreen={props.closeScreen} />

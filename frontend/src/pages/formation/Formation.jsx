@@ -11,7 +11,7 @@ import Autenticacao from '../../services/authentication'
 import StdDialog from '../../template/StdDialog'
 import {GenerateLatexButton, ProofsBookButton} from '../../template/buttons'
 
-import FormProfessionalActivity from './prefessional-activities/ProfessionalActivities'
+import ProfessionalActivities from './prefessional-activities/ProfessionalActivities'
 import './Formation.css'
 
 
@@ -53,7 +53,7 @@ export default function Formation(props) {
                         <Typography variant="h5" component="h3">Experiência Profissional</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
-                        <FormProfessionalActivity/>
+                        <ProfessionalActivities/>
                     </AccordionDetails>
                 </Accordion>
                 <Accordion>

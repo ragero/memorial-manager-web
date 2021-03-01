@@ -11,10 +11,14 @@ class DaoProfessionalActivities {
 
     preprocessData(data) {
         data.yearBegin = Number(data.yearBegin)
-        if(data.yearEnd !== undefined || data.yearEnd !== ''){
+        if(data.yearEnd !== undefined ){
             data.yearEnd = Number(data.yearEnd)
         }
 
+        if(data.proof !== undefined ){
+            delete data.proof
+        }
+        
         return data
     }
 

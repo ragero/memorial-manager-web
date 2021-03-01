@@ -99,15 +99,12 @@ class BaseDao {
     }
 
     update(data) {
-        // console.log('=======Dentro do update======')
         const idData = data._id
         delete data._id
 
         const newData = {}
         Object.keys(data).forEach((key) => {
-            if (!((key === 'proof') && ((data['proof'] === 'undefined') || (data['proof'] === '') || (data['proof'] === undefined)))) {
-                newData[`${this.baseField}.$.${key}`] = data[key]
-            }
+            newData[`${this.baseField}.$.${key}`] = data[key]
         })
         return new Promise((resolve, reject) => {
             collection.updateOne({ [`${this.baseField}._id`]: ObjectID(idData) },

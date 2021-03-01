@@ -46,9 +46,9 @@ export default class Form extends Component {
      render() {
           return (
                <div className="screen-form">
-                    <Container maxWidth="sm" className="screen-form-container">
+                    <Container maxWidth="sm" className="screen-form-container shadow-sm">
                          <div className="screen-form-container-title-bar pt-2">
-                              <Typography variant="h5" component="h3" className="ml-2">
+                              <Typography variant="h5" component="h3" className="ml-1">
                                    {this.props.sendType} {this.props.itemType}{" "}
                               </Typography>
                               <CloseButton  

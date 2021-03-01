@@ -1,10 +1,16 @@
-import { Button, Tooltip } from "@material-ui/core"
+import { IconButton, Tooltip } from "@material-ui/core"
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever"
+
+const style = {
+     width: '35px',
+     height: '35px',
+ }
 
 export default function RemoveButton(props) {
      return (
           <Tooltip title="Remover" aria-label="remover">
-               <Button
+               <IconButton
+                    style={style}
                     color="secondary"
                     onClick={(e) => {
                          const resp = window.confirm("Deseja realmente remover este item?")
@@ -15,7 +21,7 @@ export default function RemoveButton(props) {
                     }}
                >
                     <DeleteForeverIcon />
-               </Button>
+               </IconButton>
           </Tooltip>
      )
 }

@@ -19,7 +19,10 @@ export default class ProfessionalActivitiesForm extends Form {
           formData.append("role", this.state.role)
           formData.append("institution", this.state.institution)
           formData.append("yearBegin", this.state.yearBegin)
-          formData.append("yearEnd", this.state.yearEnd)
+          if (this.state.yearEnd !== ''){
+               formData.append("yearEnd", this.state.yearEnd)
+          }
+          console.log(this.state)
           formData.append("proof", this.state.proof)
 
           const methodRequest = this.props.sendType === "Cadastrar" ? "post" : "put"
@@ -34,7 +37,7 @@ export default class ProfessionalActivitiesForm extends Form {
                .then((resposta) => {
                     if (resposta.erros === undefined) {
                          alert(`${this.props.itemType} ${acao} com sucesso`)
-                         this.resetData()
+                         //this.resetData()
                          this.props.updateItems()
                          this.props.closeRegistrationScreen()
                     } else {

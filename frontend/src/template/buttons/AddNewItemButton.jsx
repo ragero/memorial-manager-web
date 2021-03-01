@@ -7,7 +7,7 @@ export default function AddNewItemButton(props) {
                variant="contained"
                onClick={(e) => {
                     props.resetState()
-                    props.updateSendType("cadastrar")
+                    props.updateSendType("Cadastrar")
                     props.openRegistrationScreen()
                }}
           >
