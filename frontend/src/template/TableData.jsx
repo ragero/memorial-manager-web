@@ -28,6 +28,8 @@ const useStyles = makeStyles({
 })
 
 function remove(id, route) {
+     console.log(id)
+     console.log(route)
      apiRequest
           .delete(`${route}/${id}`)
           .then((resposta) => resposta.data)
@@ -57,9 +59,112 @@ export default function TablePublications(props) {
           setPage(0)
      }
 
-     console.log(props.columns)
-     console.log(props.data)
+     console.log("Table data!!=======================")
+     console.log('route:', props.route)
+     console.log('columns:', props.columns)
+     console.log('data:', props.data)
+     console.log(props.data.length)
+     if(props.data === undefined){
+          alert('cai no item do undefined')
+     }
+     if(props.data.length === 0){
+          alert('cai no item no lenght')
+     }
+     console.log("End Table data!!=======================")
 
+     if (props.data === undefined || props.data.length === 0 || props.data[0] === undefined) {
+          return "Não há itens cadastrados"
+          
+     } else {
+          return (
+               <React.Fragment>
+                    <Paper className={classes.root}>
+                         <TableContainer className={classes.container}>
+                              <Table stickyHeader aria-label="sticky table">
+                                   <TableHead>
+                                        <TableRow>
+                                             {props.columns.map((column) => (
+                                                  <TableCell
+                                                       key={column.id}
+                                                       align={column.align}
+                                                       style={{ minWidth: column.minWidth }}
+                                                  >
+                                                       {column.label}
+                                                  </TableCell>
+                                             ))}
+                                        </TableRow>
+                                   </TableHead>
+                                   <TableBody>
+                                        {props.data
+                                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                             .map((row) => {
+                                                  return (
+                                                       <TableRow hover role="checkbox" tabIndex={-1} key={row._id}>
+                                                            {columns.map((column) => {
+                                                                 const value = row[column.id]
+
+                                                                 if (column.id === "acoes") {
+                                                                      return (
+                                                                           <TableCell
+                                                                                key={column.id}
+                                                                                align={column.align}
+                                                                           >
+                                                                                <EditButton
+                                                                                     updateSendType={
+                                                                                          props.updateSendType
+                                                                                     }
+                                                                                     updateCurrentItem={
+                                                                                          props.updateCurrentItem
+                                                                                     }
+                                                                                     openRegistrationScreen={
+                                                                                          props.openRegistrationScreen
+                                                                                     }
+                                                                                     row={row}
+                                                                                />
+                                                                                <RemoveButton
+                                                                                     remove={remove}
+                                                                                     row={row}
+                                                                                     updateItems={props.updateItems}
+                                                                                     route={props.route}
+                                                                                />
+
+                                                                                <ViewFileButton row={row} />
+                                                                           </TableCell>
+                                                                      )
+                                                                 } else {
+                                                                      return (
+                                                                           <TableCell
+                                                                                key={column.id}
+                                                                                align={column.align}
+                                                                           >
+                                                                                {column.format &&
+                                                                                typeof value === "number"
+                                                                                     ? column.format(value)
+                                                                                     : value}
+                                                                           </TableCell>
+                                                                      )
+                                                                 }
+                                                            })}
+                                                       </TableRow>
+                                                  )
+                                             })}
+                                   </TableBody>
+                              </Table>
+                         </TableContainer>
+                         <TablePagination
+                              rowsPerPageOptions={rowsPerPageValues}
+                              labelRowsPerPage={entriesPerPageDescription}
+                              component="div"
+                              count={props.data.length}
+                              rowsPerPage={rowsPerPage}
+                              page={page}
+                              onChangePage={handleChangePage}
+                              onChangeRowsPerPage={handleChangeRowsPerPage}
+                         />
+                    </Paper>
+               </React.Fragment>
+          )
+     }
      return (
           <React.Fragment>
                <Paper className={classes.root}>
@@ -89,9 +194,14 @@ export default function TablePublications(props) {
 
                                                             if (column.id === "acoes") {
                                                                  return (
-                                                                      <TableCell key={column.id} align={column.align}>
+                                                                      <TableCell
+                                                                           key={column.id}
+                                                                           align={column.align}
+                                                                      >
                                                                            <EditButton
-                                                                                updateSendType={props.updateSendType}
+                                                                                updateSendType={
+                                                                                     props.updateSendType
+                                                                                }
                                                                                 updateCurrentItem={
                                                                                      props.updateCurrentItem
                                                                                 }
@@ -112,8 +222,12 @@ export default function TablePublications(props) {
                                                                  )
                                                             } else {
                                                                  return (
-                                                                      <TableCell key={column.id} align={column.align}>
-                                                                           {column.format && typeof value === "number"
+                                                                      <TableCell
+                                                                           key={column.id}
+                                                                           align={column.align}
+                                                                      >
+                                                                           {column.format &&
+                                                                           typeof value === "number"
                                                                                 ? column.format(value)
                                                                                 : value}
                                                                       </TableCell>

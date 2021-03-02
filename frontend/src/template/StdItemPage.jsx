@@ -22,17 +22,20 @@ export default class ProfessionalActivities extends Component {
      }
 
      updateItems() {
+          
           apiRequest
                .get(this.route)
                .then((response) => {
                     return response.data
                })
                .then((response) => {
-                    console.log('update item =================')
-                    console.log(this.baseItem)
-                    console.log(this.specifcItem)
-                    let listItems = response.map((item) => item[this.baseItem][this.specifcItem])
+                    console.log('==========================================================')
+                    console.log('BaseItem:', this.baseItem)
+                    console.log('SpecificItem:', this.specificItem)
+                    let listItems = response.map((item) => item[this.baseItem][this.specificItem])
                     this.setState({ items: listItems })
+                    console.log(listItems)
+                    alert('Aqui o update')
                })
                .catch((erro) => {
                     console.log(erro)
@@ -81,7 +84,7 @@ export default class ProfessionalActivities extends Component {
                          </AddNewItemButton>
                     </div>
                     <hr />
-                    {this.state.items.length === 0 ? (
+                    {this.state.items === undefined || this.state.items.length === 0 ? (
                          this.textNoData
                     ) : (
                          <TableData

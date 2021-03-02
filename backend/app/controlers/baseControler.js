@@ -3,8 +3,10 @@ const { validationResult } = require('express-validator')
 
 class BaseControler {
 
-    constructor(dao){
+    constructor(dao, baseItem, specificItem){
         this.dao = dao 
+        this.baseItem = baseItem
+        this.specificItem = specificItem
     }
 
     add() {
@@ -27,7 +29,10 @@ class BaseControler {
     getAll() {
         return (req, resp) => {
             this.dao.getAll(req.user)
-                .then(result => resp.json(result))
+                .then(result => {
+                    console.log(result)
+                    resp.json(result)
+                })
                 .catch(erro => resp.json(erro))
         }
     }
@@ -37,7 +42,7 @@ class BaseControler {
             this.dao.get(req.user, req.params.id)
                 .then(result => {
                     if (result !== undefined) {
-                        const data = result['formation']['professionalActivities']
+                        const data = result[this.baseItem][this.specificItem]
                         if (!((data['filePath'] === undefined) || (data['filePath'] === ''))) {
                             fs.unlink(`./${data['filePath']}`, err => { console.log('===========\n==========\n===========', err) })
                         }
@@ -68,7 +73,7 @@ class BaseControler {
                         let oldPath = undefined
                         if (result !== undefined) {
                             console.log('Imprimindo o results!= =====================')
-                            const data = result['formation']['professionalActivities']
+                            const data = result[this.baseItem][this.specificItem]
                             if ((data['filePath'] !== undefined)) {
                                 oldPath = data['filePath']
                                 if ((content['filePath'] === undefined) || (content['filePath'] === '')) {

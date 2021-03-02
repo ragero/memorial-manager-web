@@ -1,129 +1,47 @@
-const { ObjectID } = require("mongodb")
+const BaseDao = require('../baseDao')
 
-class DaoComplementaryFormations {
+const baseField = 'formation.complementaryFormations'
+const sortFields = { [`${baseField}.yearBegin`]: -1, [`${baseField}.role`]: 1}
+
+class DaoComplementaryFormation {
+
+    constructor(){
+        this.dao = new BaseDao(baseField,sortFields)
+    }
 
     preprocessData(data) {
-        data._id = new ObjectID()
-        data.anoConclusao = Number(data.anoConclusao)
+        if(data.yearEnd !== undefined ){
+            data.yearEnd = Number(data.yearEnd)
+        }
+
+        if(data.proof !== undefined ){
+            delete data.proof
+        }
+        
         return data
     }
 
-    getComplementaryFormation(user, idProject) {
-        return new Promise((resolve, reject) => {
-            collection.aggregate([
-                {
-                    $match: { 'email': user.email }
-                },
-                {
-                    $project: { formacoesComplementares: 1 }
-                },
-                {
-                    $unwind: "$formacoesComplementares"
-                },
-                {
-                    $match: { 'formacoesComplementares._id': ObjectID(idProject) }
-                }
-            ]).toArray(function (err, result) {
-                if (err) {
-                    reject(err)
-                } else {
-                    console.log(result)
-                    resolve(result)
-                }
-            });
-        })
+    get(user, idData) {
+        return this.dao.get(user,idData)
     }
 
-    getComplementaryFormation(user) {
-        return new Promise((resolve, reject) => {
-            collection.aggregate([
-                {
-                    $match: { 'email': user.email }
-                },
-                {
-                    $project: { formacoesComplementares: 1 }
-                },
-                {
-                    $unwind: "$formacoesComplementares"
-                },
-                {
-                    $sort: { "formacoesComplementares.coordena": -1, "formacoesComplementares.anoInicio": -1, "publicacoes.comFomento": -1, "publicacoes.comTitulo": -1 }
-                }
-            ]).toArray(function (err, result) {
-                if (err) {
-                    reject(err)
-                } else {
-                    console.log(result)
-                    resolve(result)
-                }
-            });
-        })
+    getAll(user) {
+        return this.dao.getAll(user)
     }
 
-    addComplementaryFormation(user, data) {
-        data._id = new ObjectID()
+    add(user, data) {
         data = this.preprocessData(data)
-
-        return new Promise((resolve, reject) => {
-            collection.updateOne({ email: user.email },
-                {
-                    $push: {
-                        formacoesComplementares: {
-                            _id: new ObjectID(),
-                            ...data
-                        }
-                    }
-                }, function (err, document) {
-                    if (err) {
-                        reject(err)
-                    }
-                    resolve(document)
-                })
-        })
-
+        return this.dao.add(user,data)
     }
 
-    removeComplementaryFormation(id_user, idComplementary) {
-        return new Promise((resolve, reject) => {
-            collection.updateOne({ email: id_user },
-                { $pull: { projetosExtensao: { _id: ObjectID(idComplementary) } } },
-                function (err, document) {
-                    if (err) {
-                        reject(err)
-                    }
-                    resolve(document)
-                })
-
-        })
-
+    remove(idUser, idData) {
+        return this.dao.remove(idUser, idData)
     }
 
-
-    updateComplementaryFormation(data) {
-        const idComplementary = data._id
-        delete data._id
+    update(data) {
         data = this.preprocessData(data)
-
-        const newData = {}
-        Object.keys(data).forEach((key) => {
-            if (!((key === 'proof') && ((data['proof'] === 'undefined') || (data['proof'] === '')))) {
-                newData[`projetosExtensao.$.${key}`] = data[key]
-            }
-        })
-        console.log('=======Dentro do updateReasearchProject======')
-        console.log('new data')
-        console.log(newData)
-        console.log('=============')
-        return new Promise((resolve, reject) => {
-            collection.updateOne({ "projetosExtensao._id": ObjectID(idComplementary) },
-                { $set: newData }, function (err, document) {
-                    if (err) {
-                        reject(err)
-                    }
-                    resolve(document)
-                })
-        })
+        return this.dao.update(data)
     }
 }
 
-module.exports = new DaoComplementaryFormations()
+module.exports = new DaoComplementaryFormation()

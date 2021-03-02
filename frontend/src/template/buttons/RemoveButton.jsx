@@ -16,7 +16,10 @@ export default function RemoveButton(props) {
                          const resp = window.confirm("Deseja realmente remover este item?")
                          if (resp === true) {
                               props.remove(props.row._id, props.route)
+                              alert('removeu')
+                              console.log(props.updateItems())
                               props.updateItems()
+                              alert('atualizou')
                          }
                     }}
                >

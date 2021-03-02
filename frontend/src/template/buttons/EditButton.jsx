@@ -4,7 +4,6 @@ import EditIcon from "@material-ui/icons/Edit"
 const style = {
      width: '35px',
      height: '35px',
-     color: '#9C640C'
  }
 
 export default function EditButton(props) {

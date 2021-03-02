@@ -11,7 +11,9 @@ import Autenticacao from '../../services/authentication'
 import StdDialog from '../../template/StdDialog'
 import {GenerateLatexButton, ProofsBookButton} from '../../template/buttons'
 
-import ProfessionalActivities from './prefessional-activities/ProfessionalActivities'
+import AcademicFormations from './academic-formations/AcademicFormations'
+import ProfessionalActivities from './professional-activities/ProfessionalActivities'
+import ComplementaryFormations from './complementary-formations/ComplementaryFormations'
 import './Formation.css'
 
 
@@ -65,7 +67,7 @@ export default function Formation(props) {
                         <Typography variant="h5" component="h3">Formação Acadêmica</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
-                        {/* <ResearchProjects /> */}
+                        <AcademicFormations/>
                     </AccordionDetails>
                 </Accordion>
                 <Accordion>
@@ -77,7 +79,7 @@ export default function Formation(props) {
                         <Typography variant="h5" component="h3">Formação Complementar</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
-                        
+                        <ComplementaryFormations/> 
                     </AccordionDetails>
                 </Accordion>
             </Fragment>

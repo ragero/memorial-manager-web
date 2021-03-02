@@ -1,129 +1,47 @@
-const { ObjectID } = require("mongodb")
+const BaseDao = require('../baseDao')
+
+const baseField = 'formation.academicFormations'
+const sortFields = { [`${baseField}.yearEnd`]: -1, [`${baseField}.yearBegin`]: -1, [`${baseField}.course`]: 1}
 
 class DaoAcademicFormations {
 
-    preprocessData(data) {
-        data._id = new ObjectID()
-        data.ano = Number(data.ano)
+    constructor(){
+        this.dao = new BaseDao(baseField,sortFields)
+    }
 
+    preprocessData(data) {
+        data.yearBegin = Number(data.yearBegin)
+        if(data.yearEnd !== undefined ){
+            data.yearEnd = Number(data.yearEnd)
+        }
+
+        if(data.proof !== undefined ){
+            delete data.proof
+        }
+        
         return data
     }
 
-    getProfessionalActivity(user, idProject) {
-        return new Promise((resolve, reject) => {
-            collection.aggregate([
-                {
-                    $match: { 'email': user.email }
-                },
-                {
-                    $project: { formacoesAcademicas: 1 }
-                },
-                {
-                    $unwind: "$formacoesAcademicas"
-                },
-                {
-                    $match: { 'formacoesAcademicas._id': ObjectID(idProject) }
-                }
-            ]).toArray(function (err, result) {
-                if (err) {
-                    reject(err)
-                } else {
-                    console.log(result)
-                    resolve(result)
-                }
-            });
-        })
+    get(user, idData) {
+        return this.dao.get(user,idData)
     }
 
-    getProfessionalActivity(user) {
-        return new Promise((resolve, reject) => {
-            collection.aggregate([
-                {
-                    $match: { 'email': user.email }
-                },
-                {
-                    $project: { formacoesAcademicas: 1 }
-                },
-                {
-                    $unwind: "$formacoesAcademicas"
-                },
-                {
-                    $sort: { "formacoesAcademicas.coordena": -1, "formacoesAcademicas.anoInicio": -1, "publicacoes.comFomento": -1, "publicacoes.comTitulo": -1 }
-                }
-            ]).toArray(function (err, result) {
-                if (err) {
-                    reject(err)
-                } else {
-                    console.log(result)
-                    resolve(result)
-                }
-            });
-        })
+    getAll(user) {
+        return this.dao.getAll(user)
     }
 
-    addProfessionalActivity(user, data) {
-        data._id = new ObjectID()
+    add(user, data) {
         data = this.preprocessData(data)
-
-        return new Promise((resolve, reject) => {
-            collection.updateOne({ email: user.email },
-                {
-                    $push: {
-                        formacoesAcademicas: {
-                            _id: new ObjectID(),
-                            ...data
-                        }
-                    }
-                }, function (err, document) {
-                    if (err) {
-                        reject(err)
-                    }
-                    resolve(document)
-                })
-        })
-
+        return this.dao.add(user,data)
     }
 
-    removeProfessionalActivity(id_user, idAcademicFormation) {
-        return new Promise((resolve, reject) => {
-            collection.updateOne({ email: id_user },
-                { $pull: { projetosExtensao: { _id: ObjectID(idAcademicFormation) } } },
-                function (err, document) {
-                    if (err) {
-                        reject(err)
-                    }
-                    resolve(document)
-                })
-
-        })
-
+    remove(idUser, idData) {
+        return this.dao.remove(idUser, idData)
     }
 
-
-    updateProfessionalActivity(data) {
-        const idAcademicFormation = data._id
-        delete data._id
+    update(data) {
         data = this.preprocessData(data)
-
-        const newData = {}
-        Object.keys(data).forEach((key) => {
-            if (!((key === 'proof') && ((data['proof'] === 'undefined') || (data['proof'] === '')))) {
-                newData[`projetosExtensao.$.${key}`] = data[key]
-            }
-        })
-        console.log('=======Dentro do updateReasearchProject======')
-        console.log('new data')
-        console.log(newData)
-        console.log('=============')
-        return new Promise((resolve, reject) => {
-            collection.updateOne({ "projetosExtensao._id": ObjectID(idAcademicFormation) },
-                { $set: newData }, function (err, document) {
-                    if (err) {
-                        reject(err)
-                    }
-                    resolve(document)
-                })
-        })
+        return this.dao.update(data)
     }
 }
 

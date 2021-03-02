@@ -1,4 +1,3 @@
-const { check } = require('express-validator')
 const validators = require('../baseModel')
 
 class ProfessionalActivitiesModel {

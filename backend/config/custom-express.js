@@ -39,6 +39,8 @@ app.use(express.json())
 app.use(cors())
 
 app.use((req, resp, next) => {
+    console.log('Body =========================================================================')
+    console.log('Body =========================================================================')
     console.log('Body ====================================')
     console.log(req.body)
     console.log('Paramsssss ====================================')
